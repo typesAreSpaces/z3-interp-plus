@@ -839,7 +839,7 @@ public:
         else {
             m_out << "(declare-sort ";
             visit_sort(s);
-            m_out << ")";
+            m_out << " 0)";
             newline();
         }
         mark.mark(s, true);
@@ -1015,4 +1015,74 @@ void ast_smt_pp::display_smt2(std::ostream& strm, expr* n) {
     else {
         p(n);
     }
+}
+
+void ast_smt_pp::display_smt2_decls_only(std::ostream& strm, expr* n) {
+    ptr_vector<quantifier> ql;
+    ast_manager& m = m_manager;
+    decl_collector decls(m);
+    smt_renaming rn;
+
+    for (unsigned i = 0; i < m_assumptions.size(); ++i) {
+        decls.visit(m_assumptions[i].get());
+    }
+    for (unsigned i = 0; i < m_assumptions_star.size(); ++i) {
+        decls.visit(m_assumptions_star[i].get());
+    }
+    decls.visit(n);
+
+    if (m.is_proof(n)) {
+        strm << "(";
+    }
+    if (m_benchmark_name != symbol::null) {
+        strm << "; " << m_benchmark_name << "\n";
+    }
+    if (m_source_info != symbol::null && m_source_info != symbol("")) {
+        strm << "; :source { " << m_source_info << " }\n";
+    }
+    if (m.is_bool(n)) {
+        strm << "(set-info :status " << m_status << ")\n";
+    }
+    if (m_category != symbol::null && m_category != symbol("")) {
+        strm << "; :category { " << m_category << " }\n";
+    }
+    if (m_logic != symbol::null && m_logic != symbol("")) {
+        strm << "(set-logic " << m_logic << ")\n";
+    }
+    if (m_attributes.size() > 0) {
+        strm << "; " << m_attributes.c_str();
+    }
+
+#if 0
+    decls.display_decls(strm);
+#else
+    decls.order_deps();
+    ast_mark sort_mark;
+    for (unsigned i = 0; i < decls.get_num_sorts(); ++i) {
+        sort* s = decls.get_sorts()[i];
+        if (!(*m_is_declared)(s)) {
+            smt_printer p(strm, m, ql, rn, m_logic, true, true, m_simplify_implies, 0);
+            p.pp_sort_decl(sort_mark, s);
+        }
+    }
+
+    for (unsigned i = 0; i < decls.get_num_decls(); ++i) {
+        func_decl* d = decls.get_func_decls()[i];
+        if (!(*m_is_declared)(d)) {
+            smt_printer p(strm, m, ql, rn, m_logic, true, true, m_simplify_implies, 0);
+            p(d);
+            strm << "\n";
+        }
+    }
+
+    for (unsigned i = 0; i < decls.get_num_preds(); ++i) {
+        func_decl* d = decls.get_pred_decls()[i];
+        if (!(*m_is_declared)(d)) {
+            smt_printer p(strm, m, ql, rn, m_logic, true, true, m_simplify_implies, 0);
+            p(d);
+            strm << "\n";
+        }
+    }
+#endif
+
 }

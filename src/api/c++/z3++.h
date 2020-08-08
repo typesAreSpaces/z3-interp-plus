@@ -2051,6 +2051,26 @@ namespace z3 {
                                    fml));
         }
 
+        std::string to_smt2_decls_only(char const* status = "unknown") {
+            array<Z3_ast> es(assertions());
+            Z3_ast const* fmls = es.ptr();
+            Z3_ast fml = 0;
+            unsigned sz = es.size();
+            if (sz > 0) {
+                --sz;
+                fml = fmls[sz];
+            }
+            else {
+                fml = ctx().bool_val(true);
+            }
+            return std::string(Z3_benchmark_to_smtlib_string_decls_only(
+                                   ctx(),
+                                   "", "", status, "",
+                                   sz,
+                                   fmls,
+                                   fml));
+        }
+
         param_descrs get_param_descrs() { return param_descrs(ctx(), Z3_solver_get_param_descrs(ctx(), m_solver)); }
 
     };
