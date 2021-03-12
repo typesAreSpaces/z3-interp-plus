@@ -76,3 +76,4 @@ src/api/ml/z3.mllib
 doc/api
 doc/code
 .clangd/index/.*
+*.idx
