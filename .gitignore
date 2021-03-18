@@ -75,5 +75,5 @@ src/api/ml/z3.mllib
 *.bak
 doc/api
 doc/code
-.clangd/index/.*
-\.clangd/index/z3_api.h.073A85F554054F06.idx
+.*
+!/.gitignore
