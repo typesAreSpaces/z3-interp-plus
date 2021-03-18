@@ -1,4 +1,4 @@
-LDIR=./../Documents/GithubProjects/z3-interp-plus/build
+LDIR=./../build
 CC=g++
 OS=$(shell uname)
 ifeq ($(OS), Darwin)
