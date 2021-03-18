@@ -76,4 +76,4 @@ src/api/ml/z3.mllib
 doc/api
 doc/code
 .clangd/index/.*
-.clangd/index/z3_api.h.073A85F554054F06.idx
+\.clangd/index/z3_api.h.073A85F554054F06.idx
