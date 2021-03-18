@@ -1075,6 +1075,8 @@ namespace z3 {
            \brief Return a simplified version of this expression.
         */
         expr simplify() const { Z3_ast r = Z3_simplify(ctx(), m_ast); check_error(); return expr(ctx(), r); }
+
+        expr qf_to_simplify() const { Z3_ast r = Z3_simplify(ctx(), m_ast); check_error(); return expr(ctx(), r); }
         /**
            \brief Return a simplified version of this expression. The parameter \c p is a set of parameters for the Z3 simplifier.
         */
