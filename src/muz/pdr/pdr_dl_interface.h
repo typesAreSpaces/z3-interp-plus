@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    pdr_dl_interface.h
+  pdr_dl_interface.h
 
 Abstract:
 
-    SMT2 interface for the datalog PDR
+SMT2 interface for the datalog PDR
 
 Author:
 
-    Krystof Hoder (t-khoder) 2011-9-22.
+Krystof Hoder (t-khoder) 2011-9-22.
 
 Revision History:
 
@@ -28,50 +28,50 @@ Revision History:
 #include "util/statistics.h"
 
 namespace datalog {
-    class context;
+  class context;
 }
 
 namespace pdr {
 
-    class context;
+  class context;
 
-    class dl_interface : public datalog::engine_base {
-        datalog::context& m_ctx;
-        datalog::rule_set m_pdr_rules;
-        datalog::rule_set m_old_rules;
-        context*          m_context;
-        obj_map<func_decl, func_decl*> m_pred2slice;
-        ast_ref_vector    m_refs;
+  class dl_interface : public datalog::engine_base {
+    datalog::context& m_ctx;
+    datalog::rule_set m_pdr_rules;
+    datalog::rule_set m_old_rules;
+    context*          m_context;
+    obj_map<func_decl, func_decl*> m_pred2slice;
+    ast_ref_vector    m_refs;
 
-        void check_reset();
+    void check_reset();
 
     public:
-        dl_interface(datalog::context& ctx); 
-        ~dl_interface() override;
-        
-        lbool query(expr* query) override;
+    dl_interface(datalog::context& ctx); 
+    ~dl_interface() override;
 
-        void display_certificate(std::ostream& out) const override;
+    lbool query(expr* query) override;
 
-        void collect_statistics(statistics& st) const override;
+    void display_certificate(std::ostream& out) const override;
 
-        void reset_statistics() override;
+    void collect_statistics(statistics& st) const override;
 
-        expr_ref get_answer() override;
+    void reset_statistics() override;
 
-        unsigned get_num_levels(func_decl* pred) override;
+    expr_ref get_answer() override;
 
-        expr_ref get_cover_delta(int level, func_decl* pred) override;
-       
-        void add_cover(int level, func_decl* pred, expr* property) override;
-               
-        void updt_params() override;
+    unsigned get_num_levels(func_decl* pred) override;
 
-        model_ref get_model() override;
+    expr_ref get_cover_delta(int level, func_decl* pred) override;
 
-        proof_ref get_proof() override;
-        
-    };
+    void add_cover(int level, func_decl* pred, expr* property) override;
+
+    void updt_params() override;
+
+    model_ref get_model() override;
+
+    proof_ref get_proof() override;
+
+  };
 }
 
 

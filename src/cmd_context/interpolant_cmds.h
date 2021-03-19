@@ -5,16 +5,16 @@
 
   interpolant_cmds.h
 
-  Abstract:
-  Commands for interpolation.
+Abstract:
+Commands for interpolation.
 
-  Author:
+Author:
 
-  Leonardo (leonardo) 2011-12-23
+Leonardo (leonardo) 2011-12-23
 
-  Notes:
+Notes:
 
-  --*/
+--*/
 #ifndef INTERPOLANT_CMDS_H_
 #define INTERPOLANT_CMDS_H_
 

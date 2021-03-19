@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    dl_mk_similarity_compressor.h
+  dl_mk_similarity_compressor.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Krystof Hoder (t-khoder) 2010-10-22.
+Krystof Hoder (t-khoder) 2010-10-22.
 
 Revision History:
 
@@ -30,47 +30,47 @@ Revision History:
 
 namespace datalog {
 
-    /**
-       \brief Functor for merging groups of similar rules.
+  /**
+    \brief Functor for merging groups of similar rules.
 
-       A rule sequence
-       
-       P("1",x):-Q(x).
-       ...
-       P("N",x):-Q(x).
+    A rule sequence
 
-       will be replaced by
-       
-       P(y,x):-Q(x), Aux(y).
-       
-       and a set of facts
+    P("1",x):-Q(x).
+    ...
+    P("N",x):-Q(x).
 
-       Aux("1").
-       ...
-       Aux("N").
+    will be replaced by
 
-       Similar transformation is performed when the varying constant appears in the positive tail.
+    P(y,x):-Q(x), Aux(y).
+
+    and a set of facts
+
+    Aux("1").
+    ...
+    Aux("N").
+
+    Similar transformation is performed when the varying constant appears in the positive tail.
     */
-    class mk_similarity_compressor : public rule_transformer::plugin {
+  class mk_similarity_compressor : public rule_transformer::plugin {
 
-        context &           m_context;
-        ast_manager &       m_manager;
-        /** number of similar rules necessary for a group to be introduced */
-        unsigned            m_threshold_count;
-        rule_vector         m_rules;
-        rule_ref_vector     m_result_rules;
-        bool                m_modified;
-        ast_ref_vector      m_pinned;
-        
-        void merge_class(rule_vector::iterator first, rule_vector::iterator after_last);
-        void process_class(rule_set const& source, rule_vector::iterator first, rule_vector::iterator after_last);
+    context &           m_context;
+    ast_manager &       m_manager;
+    /** number of similar rules necessary for a group to be introduced */
+    unsigned            m_threshold_count;
+    rule_vector         m_rules;
+    rule_ref_vector     m_result_rules;
+    bool                m_modified;
+    ast_ref_vector      m_pinned;
 
-        void reset();
+    void merge_class(rule_vector::iterator first, rule_vector::iterator after_last);
+    void process_class(rule_set const& source, rule_vector::iterator first, rule_vector::iterator after_last);
+
+    void reset();
     public:
-        mk_similarity_compressor(context & ctx);
-        
-        rule_set * operator()(rule_set const & source) override;
-    };
+    mk_similarity_compressor(context & ctx);
+
+    rule_set * operator()(rule_set const & source) override;
+  };
 
 };
 

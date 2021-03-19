@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_cmds.h
+  subpaving_cmds.h
 
 Abstract:
-    Commands for debugging subpaving module.
+Commands for debugging subpaving module.
 
 Author:
 
-    Leonardo (leonardo) 2012-08-09
+Leonardo (leonardo) 2012-08-09
 
 Notes:
 

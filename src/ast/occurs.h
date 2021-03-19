@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    occurs.h
+  occurs.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Leonardo de Moura (leonardo) 2007-06-07.
+Leonardo de Moura (leonardo) 2007-06-07.
 
 Revision History:
 
@@ -23,13 +23,13 @@ class expr;
 class func_decl;
 
 /**
-   \brief Return true if n1 occurs in n2
-*/
+  \brief Return true if n1 occurs in n2
+  */
 bool occurs(expr * n1, expr * n2);
 
 /**
-   \brief Return true if d is used in n
-*/
+  \brief Return true if d is used in n
+  */
 bool occurs(func_decl * d, expr * n);
 
 #endif /* OCCURS_H_ */

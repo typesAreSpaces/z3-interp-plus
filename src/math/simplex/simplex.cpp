@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2014 Microsoft Corporation
+  Copyright (c) 2014 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    simplex.h
+  simplex.h
 
 Abstract:
 
-    Multi-precision simplex tableau.
+Multi-precision simplex tableau.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2014-01-15
+Nikolaj Bjorner (nbjorner) 2014-01-15
 
 Notes:
 
@@ -21,6 +21,6 @@ Notes:
 #include "math/simplex/sparse_matrix_def.h"
 #include "math/simplex/simplex_def.h"
 namespace simplex {
-    template class simplex<mpz_ext>;
-    template class simplex<mpq_ext>;
+  template class simplex<mpz_ext>;
+  template class simplex<mpq_ext>;
 };

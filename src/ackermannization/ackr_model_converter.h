@@ -1,15 +1,15 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    ackr_model_converter.h
+  ackr_model_converter.h
 
 Abstract:
 
 Author:
 
-    Mikolas Janota
+Mikolas Janota
 
 Revision History:
 --*/

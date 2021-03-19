@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    model_core.h
+  model_core.h
 
 Abstract:
 
-    Base class for models.
+Base class for models.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2011-04-30.
+Leonardo de Moura (leonardo) 2011-04-30.
 
 Revision History:
 
@@ -24,7 +24,7 @@ Revision History:
 #include "model/func_interp.h"
 
 class model_core {
-protected:
+  protected:
     typedef obj_map<func_decl, expr *>       decl2expr;
     typedef obj_map<func_decl, func_interp*> decl2finterp;
     ast_manager &                 m_manager;
@@ -34,8 +34,8 @@ protected:
     ptr_vector<func_decl>         m_decls;       //!< domain of m_interp
     ptr_vector<func_decl>         m_const_decls; 
     ptr_vector<func_decl>         m_func_decls;  
-    
-public:
+
+  public:
     model_core(ast_manager & m):m_manager(m), m_ref_count(0) { }
     virtual ~model_core();
 
@@ -69,10 +69,10 @@ public:
     //
     void inc_ref() { ++m_ref_count; }
     void dec_ref() { 
-        --m_ref_count;
-        if (m_ref_count == 0) {
-            dealloc(this);
-        }
+      --m_ref_count;
+      if (m_ref_count == 0) {
+        dealloc(this);
+      }
     }
 
 };

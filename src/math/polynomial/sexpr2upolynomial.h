@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    sexpr2upolynomial.h
+  sexpr2upolynomial.h
 
 Abstract:
 
-    sexpr to upolynomial converter
-    
+sexpr to upolynomial converter
+
 Author:
 
-    Leonardo (leonardo) 2011-12-28
+Leonardo (leonardo) 2011-12-28
 
 Notes:
 
@@ -24,7 +24,7 @@ Notes:
 class sexpr;
 
 class sexpr2upolynomial_exception : public cmd_exception {
-public:
+  public:
     sexpr2upolynomial_exception(char const * msg, sexpr const * s);
 };
 

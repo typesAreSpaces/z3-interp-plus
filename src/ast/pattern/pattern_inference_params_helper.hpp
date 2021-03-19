@@ -7,7 +7,7 @@ struct pattern_inference_params_helper {
   params_ref const & p;
   params_ref g;
   pattern_inference_params_helper(params_ref const & _p = params_ref::get_empty()):
-     p(_p), g(gparams::get_module("pi")) {}
+    p(_p), g(gparams::get_module("pi")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("max_multi_patterns", CPK_UINT, "when patterns are not provided, the prover uses a heuristic to infer them, this option sets the threshold on the number of extra multi-patterns that can be created; by default, the prover creates at most one multi-pattern when there is no unary pattern", "0","pi");
     d.insert("block_loop_patterns", CPK_BOOL, "block looping patterns during pattern inference", "true","pi");
@@ -21,7 +21,7 @@ struct pattern_inference_params_helper {
   /*
      REG_MODULE_PARAMS('pi', 'pattern_inference_params_helper::collect_param_descrs')
      REG_MODULE_DESCRIPTION('pi', 'pattern inference (heuristics) for universal formulas (without annotation)')
-  */
+     */
   unsigned max_multi_patterns() const { return p.get_uint("max_multi_patterns", g, 0u); }
   bool block_loop_patterns() const { return p.get_bool("block_loop_patterns", g, true); }
   unsigned arith() const { return p.get_uint("arith", g, 1u); }

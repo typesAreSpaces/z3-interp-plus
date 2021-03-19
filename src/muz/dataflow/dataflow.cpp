@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    dataflow.cpp
+  dataflow.cpp
 
 Abstract:
 
-    Generic bottom-up and top-down data-flow engine for analysis
-    of rule sets.
+Generic bottom-up and top-down data-flow engine for analysis
+of rule sets.
 
 Author:
-    Henning Guenther (t-hennig)
+Henning Guenther (t-hennig)
 
 --*/
 
@@ -20,5 +20,5 @@ Author:
 
 namespace datalog {
 
-    const reachability_info reachability_info::null_fact;
+  const reachability_info reachability_info::null_fact;
 }

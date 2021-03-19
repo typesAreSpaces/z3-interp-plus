@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    model_v2_pp.h
+  model_v2_pp.h
 
 Abstract:
 
-    V2 Pretty printer for models. (backward compatibility)
+V2 Pretty printer for models. (backward compatibility)
 
 Author:
 
-    Leonardo de Moura (leonardo)
+Leonardo de Moura (leonardo)
 
 Revision History:
 --*/

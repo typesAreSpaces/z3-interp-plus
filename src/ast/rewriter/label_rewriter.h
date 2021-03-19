@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    label_rewriter.h
+  label_rewriter.h
 
 Abstract:
 
-    Basic rewriting rules for labels.
+Basic rewriting rules for labels.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2015-19-10
+Nikolaj Bjorner (nbjorner) 2015-19-10
 
 Notes:
 
@@ -24,18 +24,18 @@ Notes:
 
 
 class label_rewriter : public default_rewriter_cfg {
-    family_id m_label_fid;
-    rewriter_tpl<label_rewriter> m_rwr;
-public:    
-    label_rewriter(ast_manager & m);
-    ~label_rewriter();
+  family_id m_label_fid;
+  rewriter_tpl<label_rewriter> m_rwr;
+  public:    
+  label_rewriter(ast_manager & m);
+  ~label_rewriter();
 
-    br_status reduce_app(func_decl * f, unsigned num, expr * const * args, expr_ref & result, 
-                         proof_ref & result_pr);
+  br_status reduce_app(func_decl * f, unsigned num, expr * const * args, expr_ref & result, 
+      proof_ref & result_pr);
 
-    
-    void remove_labels(expr_ref& fml, proof_ref& pr);
-    
+
+  void remove_labels(expr_ref& fml, proof_ref& pr);
+
 };
 
 #endif

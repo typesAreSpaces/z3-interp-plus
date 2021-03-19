@@ -1,18 +1,18 @@
 /*++
-Copyright (c) 2007 Microsoft Corporation
+  Copyright (c) 2007 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    z3.h
+  z3.h
 
 Abstract:
 
-    Z3 API.
+Z3 API.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner)
-    Leonardo de Moura (leonardo) 2007-06-8
+Nikolaj Bjorner (nbjorner)
+Leonardo de Moura (leonardo) 2007-06-8
 
 Notes:
 

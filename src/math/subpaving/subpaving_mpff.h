@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpff.h
+  subpaving_mpff.h
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using mpff numerals
+Subpaving for non-linear arithmetic using mpff numerals
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-09-18.
+Leonardo de Moura (leonardo) 2012-09-18.
 
 Revision History:
 
@@ -24,7 +24,7 @@ Revision History:
 
 namespace subpaving {
 
-struct config_mpff {
+  struct config_mpff {
     typedef mpff_manager            numeral_manager;
     typedef mpff_manager::exception exception;
 
@@ -36,9 +36,9 @@ struct config_mpff {
 
     config_mpff(numeral_manager & m):m_manager(m) {}
     numeral_manager & m() const { return m_manager; }
-};
+  };
 
-typedef context_t<config_mpff> context_mpff;
+  typedef context_t<config_mpff> context_mpff;
 
 };
 

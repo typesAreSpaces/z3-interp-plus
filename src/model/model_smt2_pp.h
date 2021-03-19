@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    model_smt2_pp.h
+  model_smt2_pp.h
 
 Abstract:
 
-    Pretty printer for models using SMT2 format.
+Pretty printer for models using SMT2 format.
 
 Author:
 
-    Leonardo de Moura (leonardo)
+Leonardo de Moura (leonardo)
 
 Revision History:
 

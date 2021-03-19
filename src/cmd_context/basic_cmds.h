@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    basic_cmds.h
+  basic_cmds.h
 
 Abstract:
-    Basic commands for SMT2 front end.
+Basic commands for SMT2 front end.
 
 Author:
 
-    Leonardo (leonardo) 2011-03-30
+Leonardo (leonardo) 2011-03-30
 
 Notes:
 

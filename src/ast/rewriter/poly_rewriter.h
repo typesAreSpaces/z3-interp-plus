@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    poly_rewriter.h
+  poly_rewriter.h
 
 Abstract:
 
-    Basic rewriting rules for Polynomials.
+Basic rewriting rules for Polynomials.
 
 Author:
 
-    Leonardo (leonardo) 2011-04-08
+Leonardo (leonardo) 2011-04-08
 
 Notes:
 
@@ -26,7 +26,7 @@ Notes:
 
 template<typename Config>
 class poly_rewriter : public Config {
-protected:
+  protected:
     typedef typename Config::numeral numeral;
     sort *   m_curr_sort;
     obj_map<expr, unsigned> m_expr2pos;
@@ -66,14 +66,14 @@ protected:
     void set_curr_sort(sort * s) { m_curr_sort = s; }
 
     expr * const * get_monomials(expr * & t, unsigned & sz) {
-        if (is_add(t)) {
-            sz = to_app(t)->get_num_args();
-            return to_app(t)->get_args();
-        }
-        else {
-            sz = 1;
-            return &t;
-        }
+      if (is_add(t)) {
+        sz = to_app(t)->get_num_args();
+        return to_app(t)->get_args();
+      }
+      else {
+        sz = 1;
+        return &t;
+      }
     }
 
     br_status cancel_monomials(expr * lhs, expr * rhs, bool move, expr_ref & lhs_result, expr_ref & rhs_result);
@@ -86,23 +86,23 @@ protected:
     void hoist_cmul(expr_ref_buffer & args);
 
     class mon_lt {
-        poly_rewriter& rw;
-        int ordinal(expr* e) const;
-    public:
-        mon_lt(poly_rewriter& rw): rw(rw) {}
-        bool operator()(expr* e1, expr * e2) const;
+      poly_rewriter& rw;
+      int ordinal(expr* e) const;
+      public:
+      mon_lt(poly_rewriter& rw): rw(rw) {}
+      bool operator()(expr* e1, expr * e2) const;
     };
 
-public:
+  public:
     poly_rewriter(ast_manager & m, params_ref const & p = params_ref()):
-        Config(m),
-        m_curr_sort(nullptr),
-        m_sort_sums(false) {
+      Config(m),
+      m_curr_sort(nullptr),
+      m_sort_sums(false) {
         updt_params(p);
         SASSERT(!m_som || m_flat); // som of monomials form requires flattening to be enabled.
         SASSERT(!m_som || !m_hoist_mul); // som is mutually exclusive with hoisting multiplication.
         updt_params(p);
-    }
+      }
 
     ast_manager & m() const { return Config::m(); }
     family_id get_fid() const { return Config::get_fid(); }
@@ -124,51 +124,51 @@ public:
 
 
     br_status mk_mul_core(unsigned num_args, expr * const * args, expr_ref & result) {
-        SASSERT(num_args > 0);
-        if (num_args == 1) {
-            result = args[0];
-            return BR_DONE;
-        }
-        set_curr_sort(m().get_sort(args[0]));
-        return m_flat ?
-            mk_flat_mul_core(num_args, args, result) :
-            mk_nflat_mul_core(num_args, args, result);
+      SASSERT(num_args > 0);
+      if (num_args == 1) {
+        result = args[0];
+        return BR_DONE;
+      }
+      set_curr_sort(m().get_sort(args[0]));
+      return m_flat ?
+        mk_flat_mul_core(num_args, args, result) :
+        mk_nflat_mul_core(num_args, args, result);
     }
     br_status mk_add_core(unsigned num_args, expr * const * args, expr_ref & result) {
-        SASSERT(num_args > 0);
-        if (num_args == 1) {
-            result = args[0];
-            return BR_DONE;
-        }
-        set_curr_sort(m().get_sort(args[0]));
-        return m_flat ?
-            mk_flat_add_core(num_args, args, result) :
-            mk_nflat_add_core(num_args, args, result);
+      SASSERT(num_args > 0);
+      if (num_args == 1) {
+        result = args[0];
+        return BR_DONE;
+      }
+      set_curr_sort(m().get_sort(args[0]));
+      return m_flat ?
+        mk_flat_add_core(num_args, args, result) :
+        mk_nflat_add_core(num_args, args, result);
     }
     void mk_add(unsigned num_args, expr * const * args, expr_ref & result) {
-        if (mk_add_core(num_args, args, result) == BR_FAILED)
-            result = mk_add_app(num_args, args);
+      if (mk_add_core(num_args, args, result) == BR_FAILED)
+        result = mk_add_app(num_args, args);
     }
     void mk_add(expr* a1, expr* a2, expr_ref& result) {
-        expr* args[2] = { a1, a2 };
-        mk_add(2, args, result);
+      expr* args[2] = { a1, a2 };
+      mk_add(2, args, result);
     }
 
     void mk_mul(unsigned num_args, expr * const * args, expr_ref & result) {
-        if (mk_mul_core(num_args, args, result) == BR_FAILED)
-            result = mk_mul_app(num_args, args);
+      if (mk_mul_core(num_args, args, result) == BR_FAILED)
+        result = mk_mul_app(num_args, args);
     }
     void mk_mul(expr* a1, expr* a2, expr_ref& result) {
-        expr* args[2] = { a1, a2 };
-        mk_mul(2, args, result);
+      expr* args[2] = { a1, a2 };
+      mk_mul(2, args, result);
     }
     // The result of the following functions is never BR_FAILED
     br_status mk_uminus(expr * arg, expr_ref & result);
     br_status mk_sub(unsigned num_args, expr * const * args, expr_ref & result);
 
     void mk_sub(expr* a1, expr* a2, expr_ref& result) {
-        expr* args[2] = { a1, a2 };
-        mk_sub(2, args, result);
+      expr* args[2] = { a1, a2 };
+      mk_sub(2, args, result);
     }
 };
 

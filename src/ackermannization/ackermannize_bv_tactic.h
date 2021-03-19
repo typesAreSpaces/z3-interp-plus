@@ -1,9 +1,9 @@
 /*++
-Copyright (c) 2016 Microsoft Corporation
+  Copyright (c) 2016 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-ackermannize_bv_tactic.h
+  ackermannize_bv_tactic.h
 
 Abstract:
 
@@ -21,8 +21,8 @@ Revision History:
 tactic * mk_ackermannize_bv_tactic(ast_manager & m, params_ref const & p);
 
 /*
-  ADD_TACTIC("ackermannize_bv", "A tactic for performing full Ackermannization on bv instances.", "mk_ackermannize_bv_tactic(m, p)")
-*/
+   ADD_TACTIC("ackermannize_bv", "A tactic for performing full Ackermannization on bv instances.", "mk_ackermannize_bv_tactic(m, p)")
+   */
 
 #endif
 

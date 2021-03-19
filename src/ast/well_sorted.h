@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    well_sorted.h
+  well_sorted.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Leonardo de Moura (leonardo) 2007-12-29.
+Leonardo de Moura (leonardo) 2007-12-29.
 
 Revision History:
 

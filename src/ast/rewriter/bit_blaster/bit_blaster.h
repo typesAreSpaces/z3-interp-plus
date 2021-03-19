@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    bit_blaster.h
+  bit_blaster.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Leonardo de Moura (leonardo) 2008-06-05.
+Leonardo de Moura (leonardo) 2008-06-05.
 
 Revision History:
 
@@ -26,13 +26,13 @@ Revision History:
 #include "util/rational.h"
 
 class bit_blaster_cfg {
-public:
+  public:
     typedef rational numeral;
-protected:
+  protected:
     bv_util                  &  m_util;
     bit_blaster_params const &  m_params;
     bool_rewriter            &  m_rw;
-public:
+  public:
     bit_blaster_cfg(bv_util & u, bit_blaster_params const & p, bool_rewriter& rw);
 
     ast_manager & m() const { return m_util.get_manager(); }
@@ -54,11 +54,11 @@ public:
 };
 
 class bit_blaster : public bit_blaster_tpl<bit_blaster_cfg> {
-    bv_util                 m_util;
-    bool_rewriter           m_rw;
-public:
-    bit_blaster(ast_manager & m, bit_blaster_params const & params);
-    bit_blaster_params const & get_params() const { return this->m_params; }
+  bv_util                 m_util;
+  bool_rewriter           m_rw;
+  public:
+  bit_blaster(ast_manager & m, bit_blaster_params const & params);
+  bit_blaster_params const & get_params() const { return this->m_params; }
 };
 
 #endif /* BIT_BLASTER_H_ */

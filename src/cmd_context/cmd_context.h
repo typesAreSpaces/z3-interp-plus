@@ -1,19 +1,19 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    cmd_context.h
+  cmd_context.h
 
 Abstract:
-    Ultra-light command context.
-    It provides a generic command pluging infrastructure.
-    A command context also provides names (aka symbols) to Z3 objects.
-    These names are used to reference Z3 objects in commands.
+Ultra-light command context.
+It provides a generic command pluging infrastructure.
+A command context also provides names (aka symbols) to Z3 objects.
+These names are used to reference Z3 objects in commands.
 
 Author:
 
-    Leonardo (leonardo) 2011-03-01
+Leonardo (leonardo) 2011-03-01
 
 Notes:
 
@@ -41,109 +41,109 @@ Notes:
 
 
 class func_decls {
-    func_decl * m_decls;
-    bool signatures_collide(func_decl* f, func_decl* g) const;
-    bool signatures_collide(unsigned n, sort*const* domain, sort* range, func_decl* g) const;
-public:
-    func_decls():m_decls(nullptr) {}
-    func_decls(ast_manager & m, func_decl * f);
-    void finalize(ast_manager & m);
-    bool contains(func_decl * f) const;
-    bool contains(unsigned n, sort* const* domain, sort* range) const;
-    bool insert(ast_manager & m, func_decl * f);
-    void erase(ast_manager & m, func_decl * f);
-    bool more_than_one() const;
-    bool clash(func_decl * f) const;
-    bool empty() const { return m_decls == nullptr; }
-    func_decl * first() const;
-    func_decl * find(unsigned arity, sort * const * domain, sort * range) const;
-    func_decl * find(ast_manager & m, unsigned num_args, expr * const * args, sort * range) const;
-    unsigned get_num_entries() const;
-    func_decl * get_entry(unsigned inx);
+  func_decl * m_decls;
+  bool signatures_collide(func_decl* f, func_decl* g) const;
+  bool signatures_collide(unsigned n, sort*const* domain, sort* range, func_decl* g) const;
+  public:
+  func_decls():m_decls(nullptr) {}
+  func_decls(ast_manager & m, func_decl * f);
+  void finalize(ast_manager & m);
+  bool contains(func_decl * f) const;
+  bool contains(unsigned n, sort* const* domain, sort* range) const;
+  bool insert(ast_manager & m, func_decl * f);
+  void erase(ast_manager & m, func_decl * f);
+  bool more_than_one() const;
+  bool clash(func_decl * f) const;
+  bool empty() const { return m_decls == nullptr; }
+  func_decl * first() const;
+  func_decl * find(unsigned arity, sort * const * domain, sort * range) const;
+  func_decl * find(ast_manager & m, unsigned num_args, expr * const * args, sort * range) const;
+  unsigned get_num_entries() const;
+  func_decl * get_entry(unsigned inx);
 };
 
 struct macro_decl {
-    ptr_vector<sort> m_domain;
-    expr*            m_body;
+  ptr_vector<sort> m_domain;
+  expr*            m_body;
 
-    macro_decl(unsigned arity, sort *const* domain, expr* body):
-        m_domain(arity, domain), m_body(body) {}
+  macro_decl(unsigned arity, sort *const* domain, expr* body):
+    m_domain(arity, domain), m_body(body) {}
 
-    void dec_ref(ast_manager& m) { m.dec_ref(m_body); }
+  void dec_ref(ast_manager& m) { m.dec_ref(m_body); }
 
 };
 
 class macro_decls {
-    vector<macro_decl>* m_decls;
-public:
-    macro_decls() { m_decls = nullptr; }
-    void finalize(ast_manager& m);
-    bool insert(ast_manager& m, unsigned arity, sort *const* domain, expr* body);
-    expr* find(unsigned arity, sort *const* domain) const;
-    void erase_last(ast_manager& m);
-    vector<macro_decl>::iterator begin() const { return m_decls->begin(); }
-    vector<macro_decl>::iterator end() const { return m_decls->end(); }
+  vector<macro_decl>* m_decls;
+  public:
+  macro_decls() { m_decls = nullptr; }
+  void finalize(ast_manager& m);
+  bool insert(ast_manager& m, unsigned arity, sort *const* domain, expr* body);
+  expr* find(unsigned arity, sort *const* domain) const;
+  void erase_last(ast_manager& m);
+  vector<macro_decl>::iterator begin() const { return m_decls->begin(); }
+  vector<macro_decl>::iterator end() const { return m_decls->end(); }
 };
 
 /**
-   \brief Generic wrapper.
-*/
+  \brief Generic wrapper.
+  */
 class object_ref {
-    unsigned m_ref_count;
-public:
-    object_ref():m_ref_count(0) {}
-    virtual ~object_ref() {}
-    virtual void finalize(cmd_context & ctx) = 0;
-    void inc_ref(cmd_context & ctx) {
-        m_ref_count++;
+  unsigned m_ref_count;
+  public:
+  object_ref():m_ref_count(0) {}
+  virtual ~object_ref() {}
+  virtual void finalize(cmd_context & ctx) = 0;
+  void inc_ref(cmd_context & ctx) {
+    m_ref_count++;
+  }
+  void dec_ref(cmd_context & ctx) {
+    SASSERT(m_ref_count > 0);
+    m_ref_count--;
+    if (m_ref_count == 0) {
+      finalize(ctx);
+      dealloc(this);
     }
-    void dec_ref(cmd_context & ctx) {
-        SASSERT(m_ref_count > 0);
-        m_ref_count--;
-        if (m_ref_count == 0) {
-            finalize(ctx);
-            dealloc(this);
-        }
-    }
-    virtual char const * kind() const = 0;
+  }
+  virtual char const * kind() const = 0;
 };
 
 class ast_object_ref : public object_ref {
-    ast * m_ast;
-public:
-    ast_object_ref(cmd_context & ctx, ast * a);
-    void finalize(cmd_context & ctx) override;
-    ast * get_ast() const { return m_ast; }
-    static char const * cls_kind() { return "AST"; }
-    char const * kind() const override { return cls_kind(); }
+  ast * m_ast;
+  public:
+  ast_object_ref(cmd_context & ctx, ast * a);
+  void finalize(cmd_context & ctx) override;
+  ast * get_ast() const { return m_ast; }
+  static char const * cls_kind() { return "AST"; }
+  char const * kind() const override { return cls_kind(); }
 };
 
 class stream_ref {
-    std::string    m_default_name;
-    std::ostream & m_default;
-    std::string    m_name;
-    std::ostream * m_stream;
-    bool           m_owner;
-public:
-    stream_ref(const std::string& n, std::ostream & d):m_default_name(n), m_default(d), m_name(n), m_stream(&d), m_owner(false) {}
-    ~stream_ref() { reset(); }
-    void set(char const * name);
-    void set(std::ostream& strm);
-    void reset();
-    std::ostream & operator*() { return *m_stream; }
-    char const * name() const { return m_name.c_str(); }
+  std::string    m_default_name;
+  std::ostream & m_default;
+  std::string    m_name;
+  std::ostream * m_stream;
+  bool           m_owner;
+  public:
+  stream_ref(const std::string& n, std::ostream & d):m_default_name(n), m_default(d), m_name(n), m_stream(&d), m_owner(false) {}
+  ~stream_ref() { reset(); }
+  void set(char const * name);
+  void set(std::ostream& strm);
+  void reset();
+  std::ostream & operator*() { return *m_stream; }
+  char const * name() const { return m_name.c_str(); }
 };
 
 struct builtin_decl {
-    family_id      m_fid;
-    decl_kind      m_decl;
-    builtin_decl * m_next;
-    builtin_decl():m_fid(null_family_id), m_decl(0), m_next(nullptr) {}
-    builtin_decl(family_id fid, decl_kind k, builtin_decl * n = nullptr):m_fid(fid), m_decl(k), m_next(n) {}
+  family_id      m_fid;
+  decl_kind      m_decl;
+  builtin_decl * m_next;
+  builtin_decl():m_fid(null_family_id), m_decl(0), m_next(nullptr) {}
+  builtin_decl(family_id fid, decl_kind k, builtin_decl * n = nullptr):m_fid(fid), m_decl(k), m_next(n) {}
 };
 
 class opt_wrapper : public check_sat_result {
-public:
+  public:
     virtual bool empty() = 0;
     virtual void push() = 0;
     virtual void pop(unsigned n) = 0;
@@ -157,25 +157,25 @@ public:
 };
 
 class cmd_context : public progress_callback, public tactic_manager, public ast_printer_context {
-public:
+  public:
     enum status {
-        UNSAT, SAT, UNKNOWN
+      UNSAT, SAT, UNKNOWN
     };
 
     enum check_sat_state {
-        css_unsat, css_sat, css_unknown, css_clear
+      css_unsat, css_sat, css_unknown, css_clear
     };
 
     typedef std::pair<unsigned, expr*> macro;
 
     struct scoped_watch {
-        cmd_context &   m_ctx;
-    public:
-        scoped_watch(cmd_context & ctx):m_ctx(ctx) { m_ctx.m_watch.reset(); m_ctx.m_watch.start(); }
-        ~scoped_watch() { m_ctx.m_watch.stop(); }
+      cmd_context &   m_ctx;
+      public:
+      scoped_watch(cmd_context & ctx):m_ctx(ctx) { m_ctx.m_watch.reset(); m_ctx.m_watch.start(); }
+      ~scoped_watch() { m_ctx.m_watch.stop(); }
     };
 
-protected:
+  protected:
     context_params               m_params;
     bool                         m_main_ctx;
     symbol                       m_logic;
@@ -227,13 +227,13 @@ protected:
     ptr_vector<expr>             m_assertion_names; // named assertions are represented using boolean variables.
 
     struct scope {
-        unsigned m_func_decls_stack_lim;
-        unsigned m_psort_decls_stack_lim;
-        unsigned m_macros_stack_lim;
-        unsigned m_aux_pdecls_lim;
-        unsigned m_psort_inst_stack_lim;
-        // only m_assertions_lim is relevant when m_global_decls = true
-        unsigned m_assertions_lim;
+      unsigned m_func_decls_stack_lim;
+      unsigned m_psort_decls_stack_lim;
+      unsigned m_macros_stack_lim;
+      unsigned m_aux_pdecls_lim;
+      unsigned m_psort_inst_stack_lim;
+      // only m_assertions_lim is relevant when m_global_decls = true
+      unsigned m_assertions_lim;
     };
 
     svector<scope>               m_scopes;
@@ -246,12 +246,12 @@ protected:
     stopwatch                    m_watch;
 
     class dt_eh : public new_datatype_eh {
-        cmd_context &             m_owner;
-        datatype_util             m_dt_util;
-    public:
-        dt_eh(cmd_context & owner);
-        ~dt_eh() override;
-        void operator()(sort * dt, pdecl* pd) override;
+      cmd_context &             m_owner;
+      datatype_util             m_dt_util;
+      public:
+      dt_eh(cmd_context & owner);
+      ~dt_eh() override;
+      void operator()(sort * dt, pdecl* pd) override;
     };
 
     friend class dt_eh;
@@ -305,7 +305,7 @@ protected:
     bool macros_find(symbol const& s, unsigned n, expr*const* args, expr*& t) const;
 
 
-public:
+  public:
     cmd_context(bool main_ctx = true, ast_manager * m = nullptr, symbol const & l = symbol::null);
     ~cmd_context() override;
     void set_cancel(bool f);
@@ -384,14 +384,14 @@ public:
     void insert_rec_fun(func_decl* f, expr_ref_vector const& binding, svector<symbol> const& ids, expr* e);
     func_decl * find_func_decl(symbol const & s) const;
     func_decl * find_func_decl(symbol const & s, unsigned num_indices, unsigned const * indices,
-                               unsigned arity, sort * const * domain, sort * range) const;
+        unsigned arity, sort * const * domain, sort * range) const;
     psort_decl * find_psort_decl(symbol const & s) const;
     cmd * find_cmd(symbol const & s) const;
     sexpr * find_user_tactic(symbol const & s) const;
     object_ref * find_object_ref(symbol const & s) const;
     void mk_const(symbol const & s, expr_ref & result) const;
     void mk_app(symbol const & s, unsigned num_args, expr * const * args, unsigned num_indices, parameter const * indices, sort * range,
-                expr_ref & r) const;
+        expr_ref & r) const;
     void erase_cmd(symbol const & s);
     void erase_func_decl(symbol const & s);
     void erase_func_decl(symbol const & s, func_decl * f);
@@ -452,14 +452,14 @@ public:
     ptr_vector<expr>::const_iterator end_assertion_names() const { return m_assertion_names.end(); }
 
     /**
-       \brief Hack: consume assertions if there are no scopes.
-       This method is useful for reducing memory consumption in huge benchmarks were incrementality is not an issue.
-    */
+      \brief Hack: consume assertions if there are no scopes.
+      This method is useful for reducing memory consumption in huge benchmarks were incrementality is not an issue.
+      */
     bool consume_assertions() {
-        if (num_scopes() > 0)
-            return false;
-        restore_assertions(0);
-        return true;
+      if (num_scopes() > 0)
+        return false;
+      restore_assertions(0);
+      return true;
     }
 
     format_ns::format * pp(sort * s) const;

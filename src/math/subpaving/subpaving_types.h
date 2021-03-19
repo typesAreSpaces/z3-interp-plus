@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_types.h
+  subpaving_types.h
 
 Abstract:
 
-    Subpaving auxiliary types.
+Subpaving auxiliary types.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-08-07.
+Leonardo de Moura (leonardo) 2012-08-07.
 
 Revision History:
 
@@ -21,31 +21,31 @@ Revision History:
 
 namespace subpaving {
 
-class ineq;
+  class ineq;
 
-typedef unsigned var;
+  typedef unsigned var;
 
-const var null_var = UINT_MAX;
+  const var null_var = UINT_MAX;
 
-class exception {
-};
+  class exception {
+  };
 
-class power : public std::pair<var, unsigned> {
-public:
-    power():std::pair<var, unsigned>() {}
-    power(var v, unsigned d):std::pair<var, unsigned>(v, d) {}
-    power(power const & p):std::pair<var, unsigned>(p) {}
-    var x() const { return first; }
-    var get_var() const { return first; }
-    unsigned degree() const { return second; }
-    unsigned & degree() { return second; }
-    void set_var(var x) { first = x; }
-    struct lt_proc { bool operator()(power const & p1, power const & p2) { return p1.get_var() < p2.get_var(); } };
-};
+  class power : public std::pair<var, unsigned> {
+    public:
+      power():std::pair<var, unsigned>() {}
+      power(var v, unsigned d):std::pair<var, unsigned>(v, d) {}
+      power(power const & p):std::pair<var, unsigned>(p) {}
+      var x() const { return first; }
+      var get_var() const { return first; }
+      unsigned degree() const { return second; }
+      unsigned & degree() { return second; }
+      void set_var(var x) { first = x; }
+      struct lt_proc { bool operator()(power const & p1, power const & p2) { return p1.get_var() < p2.get_var(); } };
+  };
 
-struct display_var_proc {
+  struct display_var_proc {
     virtual void operator()(std::ostream & out, var x) const { out << "x" << x; }
-};
+  };
 
 };
 

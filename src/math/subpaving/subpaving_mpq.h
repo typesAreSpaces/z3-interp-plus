@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpq.h
+  subpaving_mpq.h
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using rationals
+Subpaving for non-linear arithmetic using rationals
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-07-31.
+Leonardo de Moura (leonardo) 2012-07-31.
 
 Revision History:
 
@@ -24,7 +24,7 @@ Revision History:
 
 namespace subpaving {
 
-struct config_mpq {
+  struct config_mpq {
     typedef unsynch_mpq_manager numeral_manager;
     struct exception {};
 
@@ -34,9 +34,9 @@ struct config_mpq {
     numeral_manager & m_manager;
     config_mpq(numeral_manager & m):m_manager(m) {}
     numeral_manager & m() const { return m_manager; }
-};
+  };
 
-typedef context_t<config_mpq> context_mpq;
+  typedef context_t<config_mpq> context_mpq;
 
 };
 

@@ -1,18 +1,18 @@
 /*++
-Copyright (c) 2007 Microsoft Corporation
+  Copyright (c) 2007 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    z3_private.h
+  z3_private.h
 
 Abstract:
 
-    Z3 API.
+Z3 API.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner)
-    Leonardo de Moura (leonardo) 2007-06-8
+Nikolaj Bjorner (nbjorner)
+Leonardo de Moura (leonardo) 2007-06-8
 
 Notes:
 
@@ -29,7 +29,7 @@ Notes:
 extern "C" {
 #endif // __cplusplus
 
-    Z3_bool Z3_API Z3_get_numeral_rational(Z3_context c, Z3_ast a, rational& r);
+  Z3_bool Z3_API Z3_get_numeral_rational(Z3_context c, Z3_ast a, rational& r);
 
 #ifdef __cplusplus
 };

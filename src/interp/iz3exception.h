@@ -1,13 +1,13 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    iz3exception.h
+  iz3exception.h
 
 Abstract:
 
-    Base class for exceptions raised by interpolation routines 
+Base class for exceptions raised by interpolation routines 
 
 Author:
 
@@ -21,7 +21,7 @@ Notes:
 #include "util/error_codes.h"
 
 class iz3_exception: public default_exception {
-public:
+  public:
     iz3_exception(const std::string &msg): default_exception(msg) {}
 };
 

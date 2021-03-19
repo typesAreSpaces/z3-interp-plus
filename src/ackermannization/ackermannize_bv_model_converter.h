@@ -1,19 +1,19 @@
- /*++
- Copyright (c) 2016 Microsoft Corporation
+/*++
+  Copyright (c) 2016 Microsoft Corporation
 
- Module Name:
+  Module Name:
 
   ackermannize_bv_model_converter.h
 
- Abstract:
+Abstract:
 
 
- Author:
+Author:
 
- Mikolas Janota (MikolasJanota)
+Mikolas Janota (MikolasJanota)
 
- Revision History:
- --*/
+Revision History:
+--*/
 #ifndef ACKERMANNIZE_BV_MODEL_CONVERTER_H_
 #define ACKERMANNIZE_BV_MODEL_CONVERTER_H_
 

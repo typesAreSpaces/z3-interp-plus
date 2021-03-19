@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    inj_axiom.h
+  inj_axiom.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Leonardo de Moura (leonardo) 2008-06-23.
+Leonardo de Moura (leonardo) 2008-06-23.
 
 Revision History:
 

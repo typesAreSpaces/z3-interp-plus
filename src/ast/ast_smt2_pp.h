@@ -1,19 +1,19 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    ast_smt2_pp.cpp
+  ast_smt2_pp.cpp
 
 Abstract:
 
-    Pretty printer of AST formulas using SMT2 format.
-    This printer is more expensive than the one in ast_smt_pp.h,
-    but is supposed to generated a "prettier" and SMT2 compliant output.
+Pretty printer of AST formulas using SMT2 format.
+This printer is more expensive than the one in ast_smt_pp.h,
+but is supposed to generated a "prettier" and SMT2 compliant output.
 
 Author:
 
-    Leonardo de Moura (leonardo)
+Leonardo de Moura (leonardo)
 
 Revision History:
 
@@ -34,7 +34,7 @@ Revision History:
 #include "util/smt2_util.h"
 
 class smt2_pp_environment {
-protected:
+  protected:
     format_ns::format * mk_neg(format_ns::format * f) const;
     format_ns::format * mk_float(rational const & val) const;
     bool is_indexed_fdecl(func_decl * f) const;
@@ -42,7 +42,7 @@ protected:
     bool is_sort_param(func_decl * f) const;
     format_ns::format * pp_as(format_ns::format * fname, sort * s);
     format_ns::format * pp_signature(format_ns::format * f_name, func_decl * f);
-public:
+  public:
     virtual ~smt2_pp_environment() {}
     virtual ast_manager & get_manager() const = 0;
     virtual arith_util & get_autil() = 0;
@@ -66,55 +66,55 @@ public:
 };
 
 /**
-   \brief Simple environment that ignores name clashes.
-   Useful for debugging code.
- */
+  \brief Simple environment that ignores name clashes.
+  Useful for debugging code.
+  */
 class smt2_pp_environment_dbg : public smt2_pp_environment {
-    ast_manager & m_manager;
-    arith_util    m_autil;
-    bv_util       m_bvutil;
-    array_util    m_arutil;
-    fpa_util      m_futil;
-    seq_util      m_sutil;
-    datatype_util m_dtutil;
-    datalog::dl_decl_util m_dlutil;
-public:
-    smt2_pp_environment_dbg(ast_manager & m):m_manager(m), m_autil(m), m_bvutil(m), m_arutil(m), m_futil(m), m_sutil(m), m_dtutil(m), m_dlutil(m) {}
-    ast_manager & get_manager() const override { return m_manager; }
-    arith_util & get_autil() override { return m_autil; }
-    bv_util & get_bvutil() override { return m_bvutil; }
-    seq_util & get_sutil() override { return m_sutil; }
-    array_util & get_arutil() override { return m_arutil; }
-    fpa_util & get_futil() override { return m_futil; }
-    datalog::dl_decl_util& get_dlutil() override { return m_dlutil; }
-    datatype_util& get_dtutil() override { return m_dtutil; }
-    bool uses(symbol const & s) const override { return false; }
+  ast_manager & m_manager;
+  arith_util    m_autil;
+  bv_util       m_bvutil;
+  array_util    m_arutil;
+  fpa_util      m_futil;
+  seq_util      m_sutil;
+  datatype_util m_dtutil;
+  datalog::dl_decl_util m_dlutil;
+  public:
+  smt2_pp_environment_dbg(ast_manager & m):m_manager(m), m_autil(m), m_bvutil(m), m_arutil(m), m_futil(m), m_sutil(m), m_dtutil(m), m_dlutil(m) {}
+  ast_manager & get_manager() const override { return m_manager; }
+  arith_util & get_autil() override { return m_autil; }
+  bv_util & get_bvutil() override { return m_bvutil; }
+  seq_util & get_sutil() override { return m_sutil; }
+  array_util & get_arutil() override { return m_arutil; }
+  fpa_util & get_futil() override { return m_futil; }
+  datalog::dl_decl_util& get_dlutil() override { return m_dlutil; }
+  datatype_util& get_dtutil() override { return m_dtutil; }
+  bool uses(symbol const & s) const override { return false; }
 };
 
 void mk_smt2_format(expr * n, smt2_pp_environment & env, params_ref const & p, 
-                    unsigned num_vars, char const * var_prefix,
-                    format_ns::format_ref & r, sbuffer<symbol> & var_names);
+    unsigned num_vars, char const * var_prefix,
+    format_ns::format_ref & r, sbuffer<symbol> & var_names);
 void mk_smt2_format(sort * s, smt2_pp_environment & env, params_ref const & p, format_ns::format_ref & r);
 void mk_smt2_format(func_decl * f, smt2_pp_environment & env, params_ref const & p, format_ns::format_ref & r);
 
 std::ostream & ast_smt2_pp(std::ostream & out, expr * n, smt2_pp_environment & env, params_ref const & p = params_ref(), unsigned indent = 0, 
-                           unsigned num_vars = 0, char const * var_prefix = nullptr);
+    unsigned num_vars = 0, char const * var_prefix = nullptr);
 std::ostream & ast_smt2_pp(std::ostream & out, sort * s, smt2_pp_environment & env, params_ref const & p = params_ref(), unsigned indent = 0);
 std::ostream & ast_smt2_pp(std::ostream & out, func_decl * f, smt2_pp_environment & env, params_ref const & p = params_ref(), unsigned indent = 0);
 
 /**
-   \brief Internal wrapper (for debugging purposes only)
-*/
+  \brief Internal wrapper (for debugging purposes only)
+  */
 struct mk_ismt2_pp {
-    ast *              m_ast;
-    ast_manager &      m_manager;
-    params_ref         m_empty;
-    params_ref const & m_params;
-    unsigned           m_indent;
-    unsigned           m_num_vars;
-    char const *       m_var_prefix;
-    mk_ismt2_pp(ast * t, ast_manager & m, params_ref const & p, unsigned indent = 0, unsigned num_vars = 0, char const * var_prefix = nullptr);
-    mk_ismt2_pp(ast * t, ast_manager & m, unsigned indent = 0, unsigned num_vars = 0, char const * var_prefix = nullptr);
+  ast *              m_ast;
+  ast_manager &      m_manager;
+  params_ref         m_empty;
+  params_ref const & m_params;
+  unsigned           m_indent;
+  unsigned           m_num_vars;
+  char const *       m_var_prefix;
+  mk_ismt2_pp(ast * t, ast_manager & m, params_ref const & p, unsigned indent = 0, unsigned num_vars = 0, char const * var_prefix = nullptr);
+  mk_ismt2_pp(ast * t, ast_manager & m, unsigned indent = 0, unsigned num_vars = 0, char const * var_prefix = nullptr);
 };
 
 std::ostream& operator<<(std::ostream& out, mk_ismt2_pp const & p);

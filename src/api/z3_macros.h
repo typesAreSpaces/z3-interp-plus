@@ -1,8 +1,8 @@
 
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
---*/
+  --*/
 
 #ifndef Z3_bool_opt
 #define Z3_bool_opt Z3_bool

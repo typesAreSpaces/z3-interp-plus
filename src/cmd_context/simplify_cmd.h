@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    simplify_cmd.h
+  simplify_cmd.h
 
 Abstract:
-    SMT2 front-end 'simplify' command.
+SMT2 front-end 'simplify' command.
 
 Author:
 
-    Leonardo (leonardo) 2011-04-20
+Leonardo (leonardo) 2011-04-20
 
 Notes:
 

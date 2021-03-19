@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    polynomial_cmds.h
+  polynomial_cmds.h
 
 Abstract:
-    Commands for debugging polynomial module.
+Commands for debugging polynomial module.
 
 Author:
 
-    Leonardo (leonardo) 2011-12-23
+Leonardo (leonardo) 2011-12-23
 
 Notes:
 

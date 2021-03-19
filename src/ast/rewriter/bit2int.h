@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2009 Microsoft Corporation
+  Copyright (c) 2009 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    bit2int.h
+  bit2int.h
 
 Abstract:
 
-    Routines for simplifying bit2int expressions.
+Routines for simplifying bit2int expressions.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2009-08-28
+Nikolaj Bjorner (nbjorner) 2009-08-28
 
 Revision History:
 
@@ -25,33 +25,33 @@ Revision History:
 #include "ast/rewriter/bv_rewriter.h"
 
 class bit2int {
-protected:
+  protected:
     typedef rational numeral;
 
     enum eq_type {
-        lt, 
-        le,
-        eq
+      lt, 
+      le,
+      eq
     };
 
     class expr_reduce {
-        bit2int& m_super;
-    public:
-        expr_reduce(bit2int& s) : m_super(s) {}
-        
-        void operator()(var* v) {
-            m_super.cache_result(v, v);
-        }
+      bit2int& m_super;
+      public:
+      expr_reduce(bit2int& s) : m_super(s) {}
 
-        void operator()(quantifier* q) {
-            m_super.visit(q);
-        }
-        
-        void operator()(app* a) {
-            m_super.visit(a);
-        }
+      void operator()(var* v) {
+        m_super.cache_result(v, v);
+      }
 
-        void operator()(ast* a) {}
+      void operator()(quantifier* q) {
+        m_super.visit(q);
+      }
+
+      void operator()(app* a) {
+        m_super.visit(a);
+      }
+
+      void operator()(ast* a) {}
 
     };
 
@@ -84,7 +84,7 @@ protected:
     void align_size(expr* e, unsigned sz, expr_ref& result);
     void align_sizes(expr_ref& a, expr_ref& b);
 
-public:
+  public:
     bit2int(ast_manager & m);
     void operator()(expr * m, expr_ref & result, proof_ref& p);
 };

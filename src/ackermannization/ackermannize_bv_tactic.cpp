@@ -1,9 +1,9 @@
 /*++
-Copyright (c) 2016 Microsoft Corporation
+  Copyright (c) 2016 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-ackermannize_bv_tactic.cpp
+  ackermannize_bv_tactic.cpp
 
 Abstract:
 
@@ -22,9 +22,9 @@ Revision History:
 
 
 class ackermannize_bv_tactic : public tactic {
-public:
+  public:
     ackermannize_bv_tactic(ast_manager& m, params_ref const& p)
-        : m(m), m_p(p)
+      : m(m), m_p(p)
     {}
 
     ~ackermannize_bv_tactic() override { }
@@ -34,52 +34,52 @@ public:
         model_converter_ref & mc,
         proof_converter_ref & pc,
         expr_dependency_ref & core) override {
+      mc = nullptr;
+      tactic_report report("ackermannize", *g);
+      fail_if_unsat_core_generation("ackermannize", g);
+      fail_if_proof_generation("ackermannize", g);
+      TRACE("ackermannize", g->display(tout << "in\n"););
+
+      expr_ref_vector flas(m);
+      const unsigned sz = g->size();
+      for (unsigned i = 0; i < sz; i++) flas.push_back(g->form(i));
+      lackr lackr(m, m_p, m_st, flas, nullptr);
+
+      // mk result
+      goal_ref resg(alloc(goal, *g, true));
+      const bool success = lackr.mk_ackermann(resg, m_lemma_limit);
+      if (!success) { // Just pass on the input unchanged
+        TRACE("ackermannize", tout << "ackermannize not run due to limit" << std::endl;);
+        result.reset();
+        result.push_back(g.get());
         mc = nullptr;
-        tactic_report report("ackermannize", *g);
-        fail_if_unsat_core_generation("ackermannize", g);
-        fail_if_proof_generation("ackermannize", g);
-        TRACE("ackermannize", g->display(tout << "in\n"););
+        pc = nullptr;
+        core = nullptr;
+        return;
+      }
+      result.push_back(resg.get());
+      // report model
+      if (g->models_enabled()) {
+        mc = mk_ackermannize_bv_model_converter(m, lackr.get_info());
+      }
 
-        expr_ref_vector flas(m);
-        const unsigned sz = g->size();
-        for (unsigned i = 0; i < sz; i++) flas.push_back(g->form(i));
-        lackr lackr(m, m_p, m_st, flas, nullptr);
-
-        // mk result
-        goal_ref resg(alloc(goal, *g, true));
-        const bool success = lackr.mk_ackermann(resg, m_lemma_limit);
-        if (!success) { // Just pass on the input unchanged
-            TRACE("ackermannize", tout << "ackermannize not run due to limit" << std::endl;);
-            result.reset();
-            result.push_back(g.get());
-            mc = nullptr;
-            pc = nullptr;
-            core = nullptr;
-            return;
-        }
-        result.push_back(resg.get());
-        // report model
-        if (g->models_enabled()) {
-            mc = mk_ackermannize_bv_model_converter(m, lackr.get_info());
-        }
-
-        resg->inc_depth();
-        TRACE("ackermannize", resg->display(tout << "out\n"););
-        SASSERT(resg->is_well_sorted());
+      resg->inc_depth();
+      TRACE("ackermannize", resg->display(tout << "out\n"););
+      SASSERT(resg->is_well_sorted());
     }
 
 
     void updt_params(params_ref const & _p) override {
-        ackermannize_bv_tactic_params p(_p);
-        m_lemma_limit = p.div0_ackermann_limit();
+      ackermannize_bv_tactic_params p(_p);
+      m_lemma_limit = p.div0_ackermann_limit();
     }
 
     void collect_param_descrs(param_descrs & r) override {
-        ackermannize_bv_tactic_params::collect_param_descrs(r);
+      ackermannize_bv_tactic_params::collect_param_descrs(r);
     }
 
     void collect_statistics(statistics & st) const override {
-        st.update("ackr-constraints", m_st.m_ackrs_sz);
+      st.update("ackr-constraints", m_st.m_ackrs_sz);
     }
 
     void reset_statistics() override { m_st.reset(); }
@@ -87,9 +87,9 @@ public:
     void cleanup() override { }
 
     tactic* translate(ast_manager& m) override {
-        return alloc(ackermannize_bv_tactic, m, m_p);
+      return alloc(ackermannize_bv_tactic, m, m_p);
     }
-private:
+  private:
     ast_manager&                         m;
     params_ref                           m_p;
     lackr_stats                          m_st;
@@ -97,5 +97,5 @@ private:
 };
 
 tactic * mk_ackermannize_bv_tactic(ast_manager & m, params_ref const & p) {
-    return alloc(ackermannize_bv_tactic, m, p);
+  return alloc(ackermannize_bv_tactic, m, p);
 }

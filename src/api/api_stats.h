@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    api_stats.h
+  api_stats.h
 
 Abstract:
-    API for Z3 statistics
-    
+API for Z3 statistics
+
 Author:
 
-    Leonardo de Moura (leonardo) 2012-03-07.
+Leonardo de Moura (leonardo) 2012-03-07.
 
 Revision History:
 
@@ -22,9 +22,9 @@ Revision History:
 #include "util/statistics.h"
 
 struct Z3_stats_ref : public api::object {
-    statistics m_stats;
-    Z3_stats_ref(api::context& c): api::object(c) {}
-    ~Z3_stats_ref() override {}
+  statistics m_stats;
+  Z3_stats_ref(api::context& c): api::object(c) {}
+  ~Z3_stats_ref() override {}
 };
 
 inline Z3_stats_ref * to_stats(Z3_stats s) { return reinterpret_cast<Z3_stats_ref *>(s); }

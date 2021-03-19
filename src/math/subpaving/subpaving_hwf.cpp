@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_hwf.cpp
+  subpaving_hwf.cpp
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using hardware floats.
+Subpaving for non-linear arithmetic using hardware floats.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-08-06.
+Leonardo de Moura (leonardo) 2012-08-06.
 
 Revision History:
 

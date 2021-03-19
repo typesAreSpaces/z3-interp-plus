@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpf.cpp
+  subpaving_mpf.cpp
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using multi-precision floats.
+Subpaving for non-linear arithmetic using multi-precision floats.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-07-31.
+Leonardo de Moura (leonardo) 2012-07-31.
 
 Revision History:
 

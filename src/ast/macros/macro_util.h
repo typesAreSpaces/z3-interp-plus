@@ -1,18 +1,18 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    macro_util.h
+  macro_util.h
 
 Abstract:
 
-    Macro finding goodies.
-    They are used during preprocessing (MACRO_FINDER=true), and model building.
+Macro finding goodies.
+They are used during preprocessing (MACRO_FINDER=true), and model building.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2010-12-15.
+Leonardo de Moura (leonardo) 2010-12-15.
 
 Revision History:
 
@@ -26,37 +26,37 @@ Revision History:
 #include "ast/rewriter/bv_rewriter.h"
 
 class macro_util {
-public:
+  public:
     /**
-       \brief See collect_macro_candidates.
-    */
+      \brief See collect_macro_candidates.
+      */
     class macro_candidates {
-        ptr_vector<func_decl> m_fs;
-        expr_ref_vector       m_defs;
-        expr_ref_vector       m_conds;
-        svector<bool>         m_ineq; // true if the macro is based on an inequality instead of equality.
-        svector<bool>         m_satisfy;
-        svector<bool>         m_hint; // macro did not contain all universal variables in the quantifier.
-        friend class macro_util;
-        ast_manager & get_manager() { return m_conds.get_manager(); }
+      ptr_vector<func_decl> m_fs;
+      expr_ref_vector       m_defs;
+      expr_ref_vector       m_conds;
+      svector<bool>         m_ineq; // true if the macro is based on an inequality instead of equality.
+      svector<bool>         m_satisfy;
+      svector<bool>         m_hint; // macro did not contain all universal variables in the quantifier.
+      friend class macro_util;
+      ast_manager & get_manager() { return m_conds.get_manager(); }
 
-    public:
-        macro_candidates(ast_manager & m);
-        ~macro_candidates() { reset(); }
+      public:
+      macro_candidates(ast_manager & m);
+      ~macro_candidates() { reset(); }
 
-        void reset();
-        void insert(func_decl * f, expr * def, expr * cond, bool ineq, bool satisfy_atom, bool hint);
-        bool empty() const { return m_fs.empty(); }
-        unsigned size() const { return m_fs.size(); }
-        func_decl * get_f(unsigned i) const { return m_fs[i]; }
-        expr * get_def(unsigned i) const { return m_defs.get(i); }
-        expr * get_cond(unsigned i) const { return m_conds.get(i); }
-        bool ineq(unsigned i) const { return m_ineq[i]; }
-        bool satisfy_atom(unsigned i) const { return m_satisfy[i]; }
-        bool hint(unsigned i) const { return m_hint[i]; }
+      void reset();
+      void insert(func_decl * f, expr * def, expr * cond, bool ineq, bool satisfy_atom, bool hint);
+      bool empty() const { return m_fs.empty(); }
+      unsigned size() const { return m_fs.size(); }
+      func_decl * get_f(unsigned i) const { return m_fs[i]; }
+      expr * get_def(unsigned i) const { return m_defs.get(i); }
+      expr * get_cond(unsigned i) const { return m_conds.get(i); }
+      bool ineq(unsigned i) const { return m_ineq[i]; }
+      bool satisfy_atom(unsigned i) const { return m_satisfy[i]; }
+      bool hint(unsigned i) const { return m_hint[i]; }
     };
 
-private:
+  private:
     ast_manager &               m_manager;
     bv_util                     m_bv;
     arith_util                  m_arith;
@@ -68,12 +68,12 @@ private:
     bool poly_contains_head(expr * n, func_decl * f, expr * exception) const;
 
     void collect_arith_macros(expr * n, unsigned num_decls, unsigned max_macros, bool allow_cond_macros,
-                              macro_candidates & r);
+        macro_candidates & r);
 
     void normalize_expr(app * head, unsigned num_decls, expr * t, expr_ref & norm_t) const;
     void insert_macro(app * head, unsigned num_decls, expr * def, expr * cond, bool ineq, bool satisfy_atom, bool hint, macro_candidates & r);
     void insert_quasi_macro(app * head, unsigned num_decls, expr * def, expr * cond, bool ineq, bool satisfy_atom, bool hint,
-                            macro_candidates & r);
+        macro_candidates & r);
 
     expr * m_curr_clause; // auxiliary var used in collect_macro_candidates.
 
@@ -89,7 +89,7 @@ private:
     bool is_poly_hint(expr * n, app * head, expr * exception);
 
 
-public:
+  public:
     macro_util(ast_manager & m);
     void set_forbidden_set(obj_hashtable<func_decl> * s) { m_forbidden_set = s; }
 
@@ -98,13 +98,13 @@ public:
     bool is_left_simple_macro(expr * n, unsigned num_decls, app_ref & head, expr_ref & def) const;
     bool is_right_simple_macro(expr * n, unsigned num_decls, app_ref & head, expr_ref & def) const;
     bool is_simple_macro(expr * n, unsigned num_decls, app_ref& head, expr_ref & def) const {
-        return is_left_simple_macro(n, num_decls, head, def) || is_right_simple_macro(n, num_decls, head, def);
+      return is_left_simple_macro(n, num_decls, head, def) || is_right_simple_macro(n, num_decls, head, def);
     }
 
     bool is_arith_macro(expr * n, unsigned num_decls, app_ref & head, expr_ref & def, bool & inv) const;
     bool is_arith_macro(expr * n, unsigned num_decls, app_ref & head, expr_ref & def) const {
-        bool inv;
-        return is_arith_macro(n, num_decls, head, def, inv);
+      bool inv;
+      return is_arith_macro(n, num_decls, head, def, inv);
     }
 
     bool is_zero_safe(expr * n) const;

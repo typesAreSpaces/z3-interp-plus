@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    api_ast_vector.h
+  api_ast_vector.h
 
 Abstract:
-    API for creating AST vectors
-    
+API for creating AST vectors
+
 Author:
 
-    Leonardo de Moura (leonardo) 2012-03-09.
+Leonardo de Moura (leonardo) 2012-03-09.
 
 Revision History:
 
@@ -21,13 +21,13 @@ Revision History:
 #include "api/api_util.h"
 
 namespace api {
-    class context;
+  class context;
 };
 
 struct Z3_ast_vector_ref : public api::object {
-    ast_ref_vector  m_ast_vector;
-    Z3_ast_vector_ref(api::context& c, ast_manager & m): api::object(c), m_ast_vector(m) {}
-    ~Z3_ast_vector_ref() override {}
+  ast_ref_vector  m_ast_vector;
+  Z3_ast_vector_ref(api::context& c, ast_manager & m): api::object(c), m_ast_vector(m) {}
+  ~Z3_ast_vector_ref() override {}
 };
 
 inline Z3_ast_vector_ref * to_ast_vector(Z3_ast_vector v) { return reinterpret_cast<Z3_ast_vector_ref *>(v); }

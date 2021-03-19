@@ -1,20 +1,20 @@
 /*++
-Copyright (c) 2007 Microsoft Corporation
+  Copyright (c) 2007 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    nnf.h
+  nnf.h
 
 Abstract:
 
-    Negation Normal Form & Skolemization
+Negation Normal Form & Skolemization
 
 Author:
 
-    Leonardo (leonardo) 2008-01-11
+Leonardo (leonardo) 2008-01-11
 
 Notes:
-    Major revision on 2011-10-06
+Major revision on 2011-10-06
 
 --*/
 #ifndef NNF_H_
@@ -25,27 +25,27 @@ Notes:
 #include "ast/normal_forms/defined_names.h"
 
 class nnf {
-    struct imp;
-    imp *  m_imp;
-public:
-    nnf(ast_manager & m, defined_names & n, params_ref const & p = params_ref());
-    ~nnf();
-    
-    void operator()(expr * n,                          // [IN] expression that should be put into NNF
-                    expr_ref_vector & new_defs,        // [OUT] new definitions
-                    proof_ref_vector & new_def_proofs, // [OUT] proofs of the new definitions 
-                    expr_ref & r,                      // [OUT] resultant expression
-                    proof_ref & p                      // [OUT] proof for (~ n r)
-                    );
+  struct imp;
+  imp *  m_imp;
+  public:
+  nnf(ast_manager & m, defined_names & n, params_ref const & p = params_ref());
+  ~nnf();
 
-    void updt_params(params_ref const & p);
-    /*
-      REG_MODULE_PARAMS('nnf', 'nnf::get_param_descrs')
-    */
-    static void get_param_descrs(param_descrs & r);
+  void operator()(expr * n,                          // [IN] expression that should be put into NNF
+      expr_ref_vector & new_defs,        // [OUT] new definitions
+      proof_ref_vector & new_def_proofs, // [OUT] proofs of the new definitions 
+      expr_ref & r,                      // [OUT] resultant expression
+      proof_ref & p                      // [OUT] proof for (~ n r)
+      );
 
-    void reset();
-    void reset_cache();
+  void updt_params(params_ref const & p);
+  /*
+     REG_MODULE_PARAMS('nnf', 'nnf::get_param_descrs')
+     */
+  static void get_param_descrs(param_descrs & r);
+
+  void reset();
+  void reset_cache();
 };
 
 #endif /* NNF_H_ */

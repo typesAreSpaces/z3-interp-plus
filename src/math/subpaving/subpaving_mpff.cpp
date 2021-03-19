@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpff.cpp
+  subpaving_mpff.cpp
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using mpff numerals.
+Subpaving for non-linear arithmetic using mpff numerals.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-09-18.
+Leonardo de Moura (leonardo) 2012-09-18.
 
 Revision History:
 

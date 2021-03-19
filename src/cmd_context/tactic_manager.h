@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    tactic_manager.h
+  tactic_manager.h
 
 Abstract:
-    Collection of tactics & probes
+Collection of tactics & probes
 
 Author:
 
-    Leonardo (leonardo) 2012-03-06
+Leonardo (leonardo) 2012-03-06
 
 Notes:
 
@@ -22,14 +22,14 @@ Notes:
 #include "util/dictionary.h"
 
 class tactic_manager {
-protected:
+  protected:
     dictionary<tactic_cmd*>  m_name2tactic;
     dictionary<probe_info*>  m_name2probe;
     ptr_vector<tactic_cmd>   m_tactics;
     ptr_vector<probe_info>   m_probes;
     void finalize_tactic_cmds();
     void finalize_probes();
-public:
+  public:
     ~tactic_manager();
 
     void insert(tactic_cmd * c);
@@ -41,7 +41,7 @@ public:
     unsigned num_probes() const { return m_probes.size(); }
     tactic_cmd * get_tactic(unsigned i) const { return m_tactics[i]; }
     probe_info * get_probe(unsigned i) const { return m_probes[i]; }
-    
+
     typedef ptr_vector<tactic_cmd>::const_iterator tactic_cmd_iterator;
     tactic_cmd_iterator begin_tactic_cmds() const { return m_tactics.begin(); }
     tactic_cmd_iterator end_tactic_cmds() const { return m_tactics.end(); }

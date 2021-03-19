@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    boolean_algebra.h
+  boolean_algebra.h
 
 Abstract:
 
-    Boolean Algebra, a la Margus Veanes Automata library.
+Boolean Algebra, a la Margus Veanes Automata library.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2016-2-27
+Nikolaj Bjorner (nbjorner) 2016-2-27
 
 Revision History:
 
@@ -25,7 +25,7 @@ Revision History:
 
 template<class T>
 class positive_boolean_algebra {
-public:
+  public:
     virtual ~positive_boolean_algebra() {}
     virtual T mk_false() = 0;
     virtual T mk_true() = 0;
@@ -38,7 +38,7 @@ public:
 
 template<class T>
 class boolean_algebra : public positive_boolean_algebra<T> {
-public:
+  public:
     ~boolean_algebra() override {}
     virtual T mk_not(T x) = 0;
 };

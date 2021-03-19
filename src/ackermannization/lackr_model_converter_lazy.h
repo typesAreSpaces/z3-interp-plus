@@ -1,19 +1,19 @@
- /*++
- Copyright (c) 2015 Microsoft Corporation
+/*++
+  Copyright (c) 2015 Microsoft Corporation
 
- Module Name:
+  Module Name:
 
   lackr_model_converter_lazy.h
 
- Abstract:
+Abstract:
 
 
- Author:
+Author:
 
- Mikolas Janota
+Mikolas Janota
 
- Revision History:
- --*/
+Revision History:
+--*/
 #ifndef LACKR_MODEL_CONVERTER_LAZY_H_
 #define LACKR_MODEL_CONVERTER_LAZY_H_
 

@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    pp.h
+  pp.h
 
 Abstract:
 
-    <abstract>
+<abstract>
 
 Author:
 
-    Leonardo de Moura (leonardo) 2008-01-20.
+Leonardo de Moura (leonardo) 2008-01-20.
 
 Revision History:
 

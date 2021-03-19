@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    cmd_context_to_goal.h
+  cmd_context_to_goal.h
 
 Abstract:
-    Procedure for copying the assertions in the
-    command context to a goal object.
+Procedure for copying the assertions in the
+command context to a goal object.
 
 Author:
 
-    Leonardo (leonardo) 2012-10-21
+Leonardo (leonardo) 2012-10-21
 
 Notes:
 

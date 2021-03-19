@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpfx.h
+  subpaving_mpfx.h
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using mpfx numerals
+Subpaving for non-linear arithmetic using mpfx numerals
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-09-20.
+Leonardo de Moura (leonardo) 2012-09-20.
 
 Revision History:
 
@@ -24,7 +24,7 @@ Revision History:
 
 namespace subpaving {
 
-struct config_mpfx {
+  struct config_mpfx {
     typedef mpfx_manager            numeral_manager;
     typedef mpfx_manager::exception exception;
 
@@ -36,9 +36,9 @@ struct config_mpfx {
 
     config_mpfx(numeral_manager & m):m_manager(m) {}
     numeral_manager & m() const { return m_manager; }
-};
+  };
 
-typedef context_t<config_mpfx> context_mpfx;
+  typedef context_t<config_mpfx> context_mpfx;
 
 };
 

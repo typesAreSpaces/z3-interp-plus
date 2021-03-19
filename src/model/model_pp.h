@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    model_pp.h
+  model_pp.h
 
 Abstract:
 
-    Pretty printer for models for debugging purposes.
+Pretty printer for models for debugging purposes.
 
 Author:
 
-    Leonardo de Moura (leonardo)
+Leonardo de Moura (leonardo)
 
 Revision History:
 

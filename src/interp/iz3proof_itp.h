@@ -5,17 +5,17 @@
 
   iz3proof.h
 
-  Abstract:
+Abstract:
 
-  This class defines a simple interpolating proof system.
+This class defines a simple interpolating proof system.
 
-  Author:
+Author:
 
-  Ken McMillan (kenmcmil)
+Ken McMillan (kenmcmil)
 
-  Revision History:
+Revision History:
 
-  --*/
+--*/
 
 #ifndef IZ3PROOF_ITP_H
 #define IZ3PROOF_ITP_H
@@ -29,13 +29,13 @@
 
 /** This class defines a simple proof system.
 
-    As opposed to iz3proof, this class directly computes interpolants,
-    so the proof representation is just the interpolant itself.
-    
+  As opposed to iz3proof, this class directly computes interpolants,
+  so the proof representation is just the interpolant itself.
+
 */
 
 class iz3proof_itp : public iz3mgr {
- public:
+  public:
 
     /** Enumeration of proof rules. */
     enum rule {Resolution,Assumption,Hypothesis,Theory,Axiom,Contra,Lemma,Reflexivity,Symmetry,Transitivity,Congruence,EqContra};
@@ -51,22 +51,22 @@ class iz3proof_itp : public iz3mgr {
 
     /** Object thrown in case of a proof error. */
     struct proof_error: public iz3_exception {
-        proof_error(): iz3_exception("proof_error") {}
+      proof_error(): iz3_exception("proof_error") {}
     };
 
 
     /** Make a resolution node with given pivot literal and premises.
-        The conclusion of premise1 should contain the negation of the
-        pivot literal, while the conclusion of premise2 should containe the
-        pivot literal.
-    */
+      The conclusion of premise1 should contain the negation of the
+      pivot literal, while the conclusion of premise2 should containe the
+      pivot literal.
+      */
     virtual node make_resolution(ast pivot, const std::vector<ast> &conc, node premise1, node premise2) = 0;
 
     /** Make an assumption node. The given clause is assumed in the given frame. */
     virtual node make_assumption(int frame, const std::vector<ast> &assumption) = 0;
 
     /** Make a hypothesis node. If phi is the hypothesis, this is
-        effectively phi |- phi. */
+      effectively phi |- phi. */
     virtual node make_hypothesis(const ast &hypothesis) = 0;
 
     /** Make an axiom node. The conclusion must be an instance of an axiom. */
@@ -76,37 +76,37 @@ class iz3proof_itp : public iz3mgr {
     virtual node make_axiom(const std::vector<ast> &conclusion, prover::range) = 0;
 
     /** Make a Contra node. This rule takes a derivation of the form
-        Gamma |- False and produces |- \/~Gamma. */
+      Gamma |- False and produces |- \/~Gamma. */
 
     virtual node make_contra(node prem, const std::vector<ast> &conclusion) = 0;
 
     /** Make a Reflexivity node. This rule produces |- x = x */
-  
+
     virtual node make_reflexivity(ast con) = 0;
-  
+
     /** Make a Symmetry node. This takes a derivation of |- x = y and
-        produces | y = x */
+      produces | y = x */
 
     virtual node make_symmetry(ast con, const ast &premcon, node prem) = 0;
 
     /** Make a transitivity node. This takes derivations of |- x = y
-        and |- y = z produces | x = z */
+      and |- y = z produces | x = z */
 
     virtual node make_transitivity(const ast &x, const ast &y, const ast &z, node prem1, node prem2) = 0;
-  
+
     /** Make a congruence node. This takes a derivation of |- x_i = y_i
-        and produces |- f(...x_i,...) = f(...,y_i,...) */
-  
+      and produces |- f(...x_i,...) = f(...,y_i,...) */
+
     virtual node make_congruence(const ast &xi_eq_yi, const ast &con, const ast &prem1) = 0;
 
     /** Make a congruence node. This takes derivations of |- x_i1 = y_i1, |- x_i2 = y_i2,...
-        and produces |- f(...x_i1...x_i2...) = f(...y_i1...y_i2...) */
+      and produces |- f(...x_i1...x_i2...) = f(...y_i1...y_i2...) */
 
     virtual node make_congruence(const std::vector<ast> &xi_eq_yi, const ast &con, const std::vector<ast> &prems) = 0;
 
     /** Make a modus-ponens node. This takes derivations of |- x
-        and |- x = y and produces |- y */
-  
+      and |- x = y and produces |- y */
+
     virtual node make_mp(const ast &x_eq_y, const ast &prem1, const ast &prem2) = 0;
 
     /** Make a farkas proof node. */
@@ -129,13 +129,13 @@ class iz3proof_itp : public iz3mgr {
     /** Create proof object to construct an interpolant. */
     static iz3proof_itp *create(prover *p, const prover::range &r, bool _weak);
 
- protected:
- iz3proof_itp(iz3mgr &m)
-     : iz3mgr(m)
+  protected:
+    iz3proof_itp(iz3mgr &m)
+      : iz3mgr(m)
     {
     }
 
- public:
+  public:
     virtual ~iz3proof_itp(){
     }
 };

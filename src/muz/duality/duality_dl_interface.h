@@ -5,18 +5,18 @@
 
   duality_dl_interface.h
 
-  Abstract:
+Abstract:
 
-  SMT2 interface for Duality
+SMT2 interface for Duality
 
-  Author:
+Author:
 
-  Krystof Hoder (t-khoder) 2011-9-22.
-  Modified by Ken McMIllan (kenmcmil) 2013-4-18.
+Krystof Hoder (t-khoder) 2011-9-22.
+Modified by Ken McMIllan (kenmcmil) 2013-4-18.
 
-  Revision History:
+Revision History:
 
-  --*/
+--*/
 
 #ifndef DUALITY_DL_INTERFACE_H_
 #define DUALITY_DL_INTERFACE_H_
@@ -28,52 +28,52 @@
 #include "util/statistics.h"
 
 namespace datalog {
-    class context;
+  class context;
 }
 
 namespace Duality {
 
-    class duality_data;
+  class duality_data;
 
-    class dl_interface : public datalog::engine_base {
-        duality_data *_d;
-        datalog::context &m_ctx;
+  class dl_interface : public datalog::engine_base {
+    duality_data *_d;
+    datalog::context &m_ctx;
 
     public:
-        dl_interface(datalog::context& ctx); 
-        ~dl_interface() override;
-        
-        lbool query(expr* query) override;
+    dl_interface(datalog::context& ctx); 
+    ~dl_interface() override;
 
-        void cancel() override;
+    lbool query(expr* query) override;
 
-        void cleanup() override;
+    void cancel() override;
 
-        void display_certificate(std::ostream& out) const override;
+    void cleanup() override;
 
-        void collect_statistics(statistics& st) const override;
+    void display_certificate(std::ostream& out) const override;
 
-        void reset_statistics() override;
+    void collect_statistics(statistics& st) const override;
 
-        expr_ref get_answer() override;
+    void reset_statistics() override;
 
-        unsigned get_num_levels(func_decl* pred) override;
+    expr_ref get_answer() override;
 
-        expr_ref get_cover_delta(int level, func_decl* pred) override;
-       
-        void add_cover(int level, func_decl* pred, expr* property) override;
-               
-        void updt_params() override;
+    unsigned get_num_levels(func_decl* pred) override;
 
-        model_ref get_model() override;
+    expr_ref get_cover_delta(int level, func_decl* pred) override;
 
-        proof_ref get_proof() override;
-        
-        duality_data *dd(){return _d;}
+    void add_cover(int level, func_decl* pred, expr* property) override;
+
+    void updt_params() override;
+
+    model_ref get_model() override;
+
+    proof_ref get_proof() override;
+
+    duality_data *dd(){return _d;}
 
     private:
-        void display_certificate_non_const(std::ostream& out);
-    };
+    void display_certificate_non_const(std::ostream& out);
+  };
 }
 
 

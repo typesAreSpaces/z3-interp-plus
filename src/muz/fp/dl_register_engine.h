@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2013 Microsoft Corporation
+  Copyright (c) 2013 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    dl_register_engine.h
+  dl_register_engine.h
 
 Abstract:
 
-    Class for creating Datalog engines.
+Class for creating Datalog engines.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2013-08-28
+Nikolaj Bjorner (nbjorner) 2013-08-28
 
 Revision History:
 
@@ -23,13 +23,13 @@ Revision History:
 
 namespace datalog {
 
-    class register_engine : public register_engine_base {
-        context* m_ctx;
+  class register_engine : public register_engine_base {
+    context* m_ctx;
     public:
-        register_engine();
-        engine_base* mk_engine(DL_ENGINE engine_type) override;
-        void set_context(context* ctx) override { m_ctx = ctx; }
-    };
+    register_engine();
+    engine_base* mk_engine(DL_ENGINE engine_type) override;
+    void set_context(context* ctx) override { m_ctx = ctx; }
+  };
 
 }
 

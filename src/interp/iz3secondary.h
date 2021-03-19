@@ -5,17 +5,17 @@
 
   iz3secondary
 
-  Abstract:
+Abstract:
 
-  Interface for secondary provers.
+Interface for secondary provers.
 
-  Author:
+Author:
 
-  Ken McMillan (kenmcmil)
+Ken McMillan (kenmcmil)
 
-  Revision History:
+Revision History:
 
-  --*/
+--*/
 
 
 #ifndef IZ3SECONDARY_H
@@ -27,12 +27,12 @@
 #include <vector>
 
 class iz3secondary : public iz3mgr {
- public:
+  public:
     virtual int interpolate(const std::vector<ast> &frames, std::vector<ast> &interpolants) = 0;
     virtual ~iz3secondary(){}
 
- protected:
- iz3secondary(const iz3mgr &mgr) : iz3mgr(mgr) {}
+  protected:
+    iz3secondary(const iz3mgr &mgr) : iz3mgr(mgr) {}
 };
 
 

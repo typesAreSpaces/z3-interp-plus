@@ -1,18 +1,18 @@
 /*++
-Copyright (c) 2006 Microsoft Corporation
+  Copyright (c) 2006 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    bv_elim.h
+  bv_elim.h
 
 Abstract:
 
-    Eliminate bit-vectors variables from clauses, by
-    replacing them by bound Boolean variables.
+Eliminate bit-vectors variables from clauses, by
+replacing them by bound Boolean variables.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2008-12-16.
+Nikolaj Bjorner (nbjorner) 2008-12-16.
 
 Revision History:
 
@@ -24,26 +24,26 @@ Revision History:
 #include "ast/rewriter/rewriter.h"
 
 class bv_elim_cfg : public default_rewriter_cfg {
-    ast_manager& m;
-public:
-    bv_elim_cfg(ast_manager& m) : m(m) {}
+  ast_manager& m;
+  public:
+  bv_elim_cfg(ast_manager& m) : m(m) {}
 
-    bool reduce_quantifier(quantifier * old_q, 
-                           expr * new_body, 
-                           expr * const * new_patterns, 
-                           expr * const * new_no_patterns,
-                           expr_ref & result,
-                           proof_ref & result_pr);
+  bool reduce_quantifier(quantifier * old_q, 
+      expr * new_body, 
+      expr * const * new_patterns, 
+      expr * const * new_no_patterns,
+      expr_ref & result,
+      proof_ref & result_pr);
 };
 
 class bv_elim_rw : public rewriter_tpl<bv_elim_cfg> {
-protected:
+  protected:
     bv_elim_cfg  m_cfg;
-public:
+  public:
     bv_elim_rw(ast_manager & m):
-        rewriter_tpl<bv_elim_cfg>(m, m.proofs_enabled(), m_cfg),
-        m_cfg(m)
-    {} 
+      rewriter_tpl<bv_elim_cfg>(m, m.proofs_enabled(), m_cfg),
+      m_cfg(m)
+  {} 
 };
 
 #endif /* BV_ELIM_H_ */

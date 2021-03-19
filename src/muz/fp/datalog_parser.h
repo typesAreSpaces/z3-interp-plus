@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2010 Microsoft Corporation
+  Copyright (c) 2010 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    datalog_parser.h
+  datalog_parser.h
 
 Abstract:
 
-    Parser for Datalogish files
+Parser for Datalogish files
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2010-5-17
+Nikolaj Bjorner (nbjorner) 2010-5-17
 
 Revision History:
 
@@ -24,24 +24,24 @@ Revision History:
 
 namespace datalog {
 
-    class parser {
+  class parser {
     public:        
-        static parser * create(context& ctx, ast_manager & ast_manager);
+      static parser * create(context& ctx, ast_manager & ast_manager);
 
-        virtual ~parser() {}
+      virtual ~parser() {}
 
-        virtual bool parse_file(char const * path) = 0;
-        virtual bool parse_string(char const * string) = 0;
-    };
+      virtual bool parse_file(char const * path) = 0;
+      virtual bool parse_string(char const * string) = 0;
+  };
 
-    class wpa_parser {
+  class wpa_parser {
     public:        
-        static wpa_parser * create(context& ctx, ast_manager & ast_manager);
+      static wpa_parser * create(context& ctx, ast_manager & ast_manager);
 
-        virtual ~wpa_parser() {}
+      virtual ~wpa_parser() {}
 
-        virtual bool parse_directory(char const * path) = 0;
-    };
+      virtual bool parse_directory(char const * path) = 0;
+  };
 
 };
 

@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    dbg_cmds.h
+  dbg_cmds.h
 
 Abstract:
-    SMT2 front-end commands for debugging purposes.
+SMT2 front-end commands for debugging purposes.
 
 Author:
 
-    Leonardo (leonardo) 2011-04-01
+Leonardo (leonardo) 2011-04-01
 
 Notes:
 

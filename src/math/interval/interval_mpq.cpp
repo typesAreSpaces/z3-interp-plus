@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    interval_mpq.cpp
+  interval_mpq.cpp
 
 Abstract:
 
-    Instantiate template using defaults.
+Instantiate template using defaults.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-10-31.
+Leonardo de Moura (leonardo) 2012-10-31.
 
 Revision History:
 

@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    api_datalog.h
+  api_datalog.h
 
 Abstract:
-    Datalog API
-    old external_relation_context_impl
+Datalog API
+old external_relation_context_impl
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-02-29.
+Leonardo de Moura (leonardo) 2012-02-29.
 
 Revision History:
 
@@ -29,16 +29,16 @@ typedef void (*reduce_app_callback_fptr)(void*, func_decl*, unsigned, expr*const
 typedef void (*reduce_assign_callback_fptr)(void*, func_decl*, unsigned, expr*const*, unsigned, expr*const*);
 
 namespace api {
-    class fixedpoint_context;
-    class context;
+  class fixedpoint_context;
+  class context;
 };
 
 
 struct Z3_fixedpoint_ref : public api::object {
-    api::fixedpoint_context *   m_datalog;
-    params_ref               m_params;
-    Z3_fixedpoint_ref(api::context& c): api::object(c), m_datalog(nullptr) {}
-    ~Z3_fixedpoint_ref() override { dealloc(m_datalog); }
+  api::fixedpoint_context *   m_datalog;
+  params_ref               m_params;
+  Z3_fixedpoint_ref(api::context& c): api::object(c), m_datalog(nullptr) {}
+  ~Z3_fixedpoint_ref() override { dealloc(m_datalog); }
 };
 
 inline Z3_fixedpoint_ref * to_fixedpoint(Z3_fixedpoint s) { return reinterpret_cast<Z3_fixedpoint_ref *>(s); }

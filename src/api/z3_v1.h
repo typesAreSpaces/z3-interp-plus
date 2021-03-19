@@ -1,22 +1,22 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    z3_v1.h
+  z3_v1.h
 
 Abstract:
 
-    Z3 1.x backwards compatibility macros.
-    These macros are used to simulate the Z3 API using in the 1.x versions.
-    This file should only be used by users still using the Z3 1.x API.
+Z3 1.x backwards compatibility macros.
+These macros are used to simulate the Z3 API using in the 1.x versions.
+This file should only be used by users still using the Z3 1.x API.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2011-09-22
+Leonardo de Moura (leonardo) 2011-09-22
 
 Notes:
-    
+
 --*/
 #ifndef Z3_V1_H_
 #define Z3_V1_H_

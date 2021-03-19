@@ -7,7 +7,7 @@ struct fixedpoint_params {
   params_ref const & p;
   params_ref g;
   fixedpoint_params(params_ref const & _p = params_ref::get_empty()):
-     p(_p), g(gparams::get_module("fixedpoint")) {}
+    p(_p), g(gparams::get_module("fixedpoint")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("timeout", CPK_UINT, "set timeout", "4294967295","fixedpoint");
     d.insert("engine", CPK_SYMBOL, "Select: auto-config, datalog, duality, pdr, bmc, spacer", "auto-config","fixedpoint");
@@ -136,7 +136,7 @@ struct fixedpoint_params {
   /*
      REG_MODULE_PARAMS('fixedpoint', 'fixedpoint_params::collect_param_descrs')
      REG_MODULE_DESCRIPTION('fixedpoint', 'fixedpoint parameters')
-  */
+     */
   unsigned timeout() const { return p.get_uint("timeout", g, 4294967295u); }
   symbol engine() const { return p.get_sym("engine", g, symbol("auto-config")); }
   symbol datalog_default_table() const { return p.get_sym("datalog.default_table", g, symbol("sparse")); }

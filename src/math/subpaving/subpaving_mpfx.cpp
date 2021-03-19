@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    subpaving_mpfx.cpp
+  subpaving_mpfx.cpp
 
 Abstract:
 
-    Subpaving for non-linear arithmetic using mpfx numerals.
+Subpaving for non-linear arithmetic using mpfx numerals.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-09-18.
+Leonardo de Moura (leonardo) 2012-09-18.
 
 Revision History:
 

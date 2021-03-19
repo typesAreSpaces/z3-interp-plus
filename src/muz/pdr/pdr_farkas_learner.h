@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    pdr_farkas_learner.h
+  pdr_farkas_learner.h
 
 Abstract:
 
-    SMT2 interface for the datalog PDR
+SMT2 interface for the datalog PDR
 
 Author:
 
-    Krystof Hoder (t-khoder) 2011-11-1.
+Krystof Hoder (t-khoder) 2011-11-1.
 
 Revision History:
 
@@ -31,7 +31,7 @@ Revision History:
 
 namespace pdr {
 
-class farkas_learner {
+  class farkas_learner {
     class farkas_collector;
     class constant_replacer_cfg;
     class equality_expander_cfg;
@@ -71,56 +71,56 @@ class farkas_learner {
     bool try_ensure_lemma_in_language(expr_ref& lemma, expr* A, const func_decl_set& lang);
 
     bool is_farkas_lemma(ast_manager& m, expr* e);
-   
+
     void get_asserted(proof* p, expr_set const& bs, ast_mark& b_closed, obj_hashtable<expr>& lemma_set, expr_ref_vector& lemmas);
 
     bool is_pure_expr(func_decl_set const& symbs, expr* e) const;
 
     static void test();
 
-public:
+    public:
     farkas_learner(smt_params& params, ast_manager& m);
 
     ~farkas_learner();
 
     /**
-       All ast objects have the ast_manager which was passed as 
-       an argument to the constructor (i.e. m_outer_mgr)
-       
-       B is a conjunction of literals.
-       A && B is unsat, equivalently A => ~B is valid
-       Find a weakened B' such that
-       A && B' is unsat and B' uses vocabulary (and constants) in common with A.
-       return lemmas to weaken B.     
-    */
+      All ast objects have the ast_manager which was passed as 
+      an argument to the constructor (i.e. m_outer_mgr)
+
+      B is a conjunction of literals.
+      A && B is unsat, equivalently A => ~B is valid
+      Find a weakened B' such that
+      A && B' is unsat and B' uses vocabulary (and constants) in common with A.
+      return lemmas to weaken B.     
+      */
 
     bool get_lemma_guesses(expr * A, expr * B, expr_ref_vector& lemmas);
 
     /**
-        Traverse a proof and retrieve lemmas using the vocabulary from bs.
-    */
+      Traverse a proof and retrieve lemmas using the vocabulary from bs.
+      */
     void get_lemmas(proof* root, expr_set const& bs, expr_ref_vector& lemmas);
 
     /**
-       Traverse a proof and retrieve consequences of A that are used to establish ~B.
-       The assumption is that:
+      Traverse a proof and retrieve consequences of A that are used to establish ~B.
+      The assumption is that:
 
-          A => \/ ~consequences[i]  and  \/ ~consequences[i] => ~B
+      A => \/ ~consequences[i]  and  \/ ~consequences[i] => ~B
 
-       e.g., the second implication can be rewritten as:
+      e.g., the second implication can be rewritten as:
 
-          B => /\ consequences[i]
-     */
+      B => /\ consequences[i]
+      */
     void get_consequences(proof* root, expr_set const& bs, expr_ref_vector& consequences);
 
     /**
-       \brief Simplify lemmas using subsumption.
-     */
+      \brief Simplify lemmas using subsumption.
+      */
     void simplify_lemmas(expr_ref_vector& lemmas);
 
     void collect_statistics(statistics& st) const;
 
-};
+  };
 
 
 }

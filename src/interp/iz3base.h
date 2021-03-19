@@ -5,18 +5,18 @@
 
   iz3base.h
 
-  Abstract:
+Abstract:
 
-  Base class for interpolators. Includes an AST manager and a scoping
-  object as bases.
+Base class for interpolators. Includes an AST manager and a scoping
+object as bases.
 
-  Author:
+Author:
 
-  Ken McMillan (kenmcmil)
+Ken McMillan (kenmcmil)
 
-  Revision History:
+Revision History:
 
-  --*/
+--*/
 
 #ifndef IZ3BASE_H
 #define IZ3BASE_H
@@ -25,39 +25,39 @@
 #include "interp/iz3scopes.h"
 
 namespace hash_space {
-    template <>
-        class hash<func_decl *> {
-    public:
+  template <>
+    class hash<func_decl *> {
+      public:
         size_t operator()(func_decl * const &s) const {
-            return (size_t) s;
+          return (size_t) s;
         }
     };
 }
 
 /* Base class for interpolators. Includes an AST manager and a scoping
    object as bases. */
- 
+
 class iz3base : public iz3mgr, public scopes {
 
- public:
+  public:
 
     /** Get the range in which an expression occurs. This is the
-        smallest subtree containing all occurrences of the
-        expression. */
+      smallest subtree containing all occurrences of the
+      expression. */
     range &ast_range(ast);
 
     /** Get the scope of an expression. This is the set of tree nodes in
-        which all of the expression's symbols are in scope. */
+      which all of the expression's symbols are in scope. */
     range &ast_scope(ast);
 
     /** Get the range of a symbol. This is the smallest subtree containing
-        all occurrences of the symbol. */ 
+      all occurrences of the symbol. */ 
     range &sym_range(symb);
 
     /** Is an expression local (in scope in some frame)? */
 
     bool is_local(ast node){
-        return !range_is_empty(ast_scope(node));
+      return !range_is_empty(ast_scope(node));
     }
 
     /** Simplify an expression */
@@ -67,42 +67,42 @@ class iz3base : public iz3mgr, public scopes {
     /** Constructor */
 
     iz3base(ast_manager &_m_manager,
-            const std::vector<ast> &_cnsts,
-            const std::vector<int> &_parents,
-            const std::vector<ast> &_theory)
-        : iz3mgr(_m_manager), scopes(_parents)  {
+        const std::vector<ast> &_cnsts,
+        const std::vector<int> &_parents,
+        const std::vector<ast> &_theory)
+      : iz3mgr(_m_manager), scopes(_parents)  {
         initialize(_cnsts,_parents,_theory);
         weak = false;
-    }
+      }
 
     iz3base(const iz3mgr& other,
-            const std::vector<ast> &_cnsts,
-            const std::vector<int> &_parents,
-            const std::vector<ast> &_theory)
-        : iz3mgr(other), scopes(_parents)  {
+        const std::vector<ast> &_cnsts,
+        const std::vector<int> &_parents,
+        const std::vector<ast> &_theory)
+      : iz3mgr(other), scopes(_parents)  {
         initialize(_cnsts,_parents,_theory);
         weak = false;
-    }
+      }
 
     iz3base(const iz3mgr& other,
-            const std::vector<std::vector<ast> > &_cnsts,
-            const std::vector<int> &_parents,
-            const std::vector<ast> &_theory)
-        : iz3mgr(other), scopes(_parents)  {
+        const std::vector<std::vector<ast> > &_cnsts,
+        const std::vector<int> &_parents,
+        const std::vector<ast> &_theory)
+      : iz3mgr(other), scopes(_parents)  {
         initialize(_cnsts,_parents,_theory);
         weak = false;
-    }
+      }
 
     iz3base(const iz3mgr& other)
-        : iz3mgr(other), scopes()  {
+      : iz3mgr(other), scopes()  {
         weak = false;
-    }
+      }
 
     /* Set our options */
     void set_option(const std::string &name, const std::string &value){
-        if(name == "weak" && value == "1") weak = true;
+      if(name == "weak" && value == "1") weak = true;
     }
-  
+
     /* Are we doing weak interpolants? */
     bool weak_mode(){return weak;}
 
@@ -117,43 +117,43 @@ class iz3base : public iz3mgr, public scopes {
 
     /** Interpolator for clauses, to be implemented */
     virtual void interpolate_clause(std::vector<ast> &lits, std::vector<ast> &itps){
-        throw iz3_exception("no interpolator");
+      throw iz3_exception("no interpolator");
     }
 
     ast get_proof_check_assump(range &rng){
-        std::vector<ast> cs(theory);
-        cs.push_back(cnsts[rng.hi]);
-        return make(And,cs);
+      std::vector<ast> cs(theory);
+      cs.push_back(cnsts[rng.hi]);
+      return make(And,cs);
     }
-  
+
     int frame_of_assertion(const ast &ass){
-        stl_ext::hash_map<ast,int>::iterator it = frame_map.find(ass);
-        if(it == frame_map.end())
-            throw iz3_exception("unknown assertion");
-        return it->second;
+      stl_ext::hash_map<ast,int>::iterator it = frame_map.find(ass);
+      if(it == frame_map.end())
+        throw iz3_exception("unknown assertion");
+      return it->second;
     }
-  
+
 
     void to_parents_vec_representation(const std::vector<ast> &_cnsts,
-                                       const ast &tree,
-                                       std::vector<ast> &cnsts,
-                                       std::vector<int> &parents,
-                                       std::vector<ast> &theory,
-                                       std::vector<int> &pos_map,
-                                       bool merge = false
-                                       );
+        const ast &tree,
+        std::vector<ast> &cnsts,
+        std::vector<int> &parents,
+        std::vector<ast> &theory,
+        std::vector<int> &pos_map,
+        bool merge = false
+        );
 
- protected:
+  protected:
     std::vector<ast> cnsts;
     std::vector<ast> theory;
 
- private:
+  private:
 
     struct ranges {
-        range rng;
-        range scp;
-        bool scope_computed;
-        ranges(){scope_computed = false;}
+      range rng;
+      range scp;
+      bool scope_computed;
+      ranges(){scope_computed = false;}
     };
 
     stl_ext::hash_map<symb,range> sym_range_hash;
@@ -163,10 +163,10 @@ class iz3base : public iz3mgr, public scopes {
 
     // int frames;                               // number of frames
 
- protected:
+  protected:
     void add_frame_range(int frame, ast t);
 
- private:
+  private:
     void initialize(const std::vector<ast> &_parts, const std::vector<int> &_parents, const std::vector<ast> &_theory);
 
     void initialize(const std::vector<std::vector<ast> > &_parts, const std::vector<int> &_parents, const std::vector<ast> &_theory);
@@ -178,14 +178,14 @@ class iz3base : public iz3mgr, public scopes {
     ast simplify_with_lit_rec(ast n, ast lit, stl_ext::hash_map<ast,ast> &memo, int depth);
     ast simplify_with_lit(ast n, ast lit);  
     void find_children(const stl_ext::hash_set<ast> &cnsts_set,
-                       const ast &tree,
-                       std::vector<ast> &cnsts,
-                       std::vector<int> &parents,
-                       std::vector<ast> &conjuncts,
-                       std::vector<int> &children,
-                       std::vector<int> &pos_map,
-                       bool merge
-                       );
+        const ast &tree,
+        std::vector<ast> &cnsts,
+        std::vector<int> &parents,
+        std::vector<ast> &conjuncts,
+        std::vector<int> &children,
+        std::vector<int> &pos_map,
+        bool merge
+        );
     bool weak;
 
 };

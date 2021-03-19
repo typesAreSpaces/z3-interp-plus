@@ -1,20 +1,20 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    api_polynomial.h
+  api_polynomial.h
 
 Abstract:
 
-    Polynomial manager and caches for the external API.
+Polynomial manager and caches for the external API.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2012-12-08
+Leonardo de Moura (leonardo) 2012-12-08
 
 Notes:
-    
+
 --*/
 #ifndef API_POLYNOMIAL_H_
 #define API_POLYNOMIAL_H_
@@ -22,16 +22,16 @@ Notes:
 #include "math/polynomial/polynomial.h"
 
 namespace api {
-    
-    class pmanager {
-        unsynch_mpz_manager m_nm;
-        polynomial::manager m_pm;
-        // TODO: add support for caching expressions -> polynomial and back
+
+  class pmanager {
+    unsynch_mpz_manager m_nm;
+    polynomial::manager m_pm;
+    // TODO: add support for caching expressions -> polynomial and back
     public:
-        pmanager(reslimit& limx);
-        virtual ~pmanager();
-        polynomial::manager & pm() { return m_pm; }
-    };
+    pmanager(reslimit& limx);
+    virtual ~pmanager();
+    polynomial::manager & pm() { return m_pm; }
+  };
 
 };
 

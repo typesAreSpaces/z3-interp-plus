@@ -1,16 +1,16 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    api_tactic.h
+  api_tactic.h
 
 Abstract:
-    API for creating tactics and goals.
-    
+API for creating tactics and goals.
+
 Author:
 
-    Leonardo de Moura (leonardo) 2012-03-06.
+Leonardo de Moura (leonardo) 2012-03-06.
 
 Revision History:
 
@@ -22,20 +22,20 @@ Revision History:
 #include "tactic/tactical.h"
 
 namespace api {
-    class context;
+  class context;
 }
 
 
 struct Z3_tactic_ref : public api::object {
-    tactic_ref   m_tactic;
-    Z3_tactic_ref(api::context& c): api::object(c) {}
-    ~Z3_tactic_ref() override {}
+  tactic_ref   m_tactic;
+  Z3_tactic_ref(api::context& c): api::object(c) {}
+  ~Z3_tactic_ref() override {}
 };
 
 struct Z3_probe_ref : public api::object {
-    probe_ref    m_probe;
-    Z3_probe_ref(api::context& c):api::object(c) {}
-    ~Z3_probe_ref() override {}
+  probe_ref    m_probe;
+  Z3_probe_ref(api::context& c):api::object(c) {}
+  ~Z3_probe_ref() override {}
 };
 
 inline Z3_tactic_ref * to_tactic(Z3_tactic g) { return reinterpret_cast<Z3_tactic_ref *>(g); }
@@ -47,12 +47,12 @@ inline Z3_probe of_probe(Z3_probe_ref * g) { return reinterpret_cast<Z3_probe>(g
 inline probe * to_probe_ref(Z3_probe g) { return g == nullptr ? nullptr : to_probe(g)->m_probe.get(); }
 
 struct Z3_apply_result_ref : public api::object {
-    goal_ref_buffer      m_subgoals;
-    model_converter_ref  m_mc;
-    proof_converter_ref  m_pc;
-    expr_dependency_ref  m_core;
-    Z3_apply_result_ref(api::context& c, ast_manager & m);
-    ~Z3_apply_result_ref() override {}
+  goal_ref_buffer      m_subgoals;
+  model_converter_ref  m_mc;
+  proof_converter_ref  m_pc;
+  expr_dependency_ref  m_core;
+  Z3_apply_result_ref(api::context& c, ast_manager & m);
+  ~Z3_apply_result_ref() override {}
 };
 
 inline Z3_apply_result_ref * to_apply_result(Z3_apply_result g) { return reinterpret_cast<Z3_apply_result_ref *>(g); }

@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2015 Microsoft Corporation
+  Copyright (c) 2015 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    ast_pp_util.h
+  ast_pp_util.h
 
 Abstract:
 
-    Utilities for printing SMT2 declarations and assertions.
+Utilities for printing SMT2 declarations and assertions.
 
 Author:
 
-    Nikolaj Bjorner (nbjorner) 2015-8-6.
+Nikolaj Bjorner (nbjorner) 2015-8-6.
 
 Revision History:
 
@@ -23,25 +23,25 @@ Revision History:
 #include "util/obj_hashtable.h"
 
 class ast_pp_util {
-    ast_manager&        m;
-    obj_hashtable<func_decl> m_removed;
- public:        
+  ast_manager&        m;
+  obj_hashtable<func_decl> m_removed;
+  public:        
 
-    decl_collector      coll;
+  decl_collector      coll;
 
-    ast_pp_util(ast_manager& m): m(m), coll(m, false) {}
+  ast_pp_util(ast_manager& m): m(m), coll(m, false) {}
 
-    void collect(expr* e);
+  void collect(expr* e);
 
-    void collect(unsigned n, expr* const* es);
+  void collect(unsigned n, expr* const* es);
 
-    void collect(expr_ref_vector const& es);
+  void collect(expr_ref_vector const& es);
 
-    void remove_decl(func_decl* f);
+  void remove_decl(func_decl* f);
 
-    void display_decls(std::ostream& out);
+  void display_decls(std::ostream& out);
 
-    void display_asserts(std::ostream& out, expr_ref_vector const& fmls, bool neat = true);
+  void display_asserts(std::ostream& out, expr_ref_vector const& fmls, bool neat = true);
 };
 
 #endif /* AST_PP_UTIL_H_ */

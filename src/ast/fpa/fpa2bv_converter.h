@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2012 Microsoft Corporation
+  Copyright (c) 2012 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    fpa2bv_converter.h
+  fpa2bv_converter.h
 
 Abstract:
 
-    Conversion routines for Floating Point -> Bit-Vector
+Conversion routines for Floating Point -> Bit-Vector
 
 Author:
 
-    Christoph (cwinter) 2012-02-09
+Christoph (cwinter) 2012-02-09
 
 Notes:
 
@@ -32,12 +32,12 @@ Notes:
 #include "ast/rewriter/bool_rewriter.h"
 
 class fpa2bv_converter {
-public:
+  public:
     typedef obj_map<func_decl, std::pair<app *, app *> > special_t;
     typedef obj_map<func_decl, expr*> const2bv_t;
     typedef obj_map<func_decl, func_decl*> uf2bvuf_t;
 
-protected:
+  protected:
     ast_manager              & m;
     bool_rewriter              m_simp;
     fpa_util                   m_util;
@@ -58,7 +58,7 @@ protected:
     friend class fpa2bv_model_converter;
     friend class bv2fpa_converter;
 
-public:
+  public:
     fpa2bv_converter(ast_manager & m);
     ~fpa2bv_converter();
 
@@ -160,7 +160,7 @@ public:
     const2bv_t const & get_rm_const2bv() const { return m_rm_const2bv; };
     uf2bvuf_t const & get_uf2bvuf() const { return m_uf2bvuf; };
 
-protected:
+  protected:
     void mk_one(func_decl *f, expr_ref & sign, expr_ref & result);
 
     void mk_is_nan(expr * e, expr_ref & result);
@@ -199,7 +199,7 @@ protected:
 
     void mk_to_bv(func_decl * f, unsigned num, expr * const * args, bool is_signed, expr_ref & result);
 
-private:
+  private:
     void mk_nan(sort * s, expr_ref & result);
     void mk_nzero(sort * s, expr_ref & result);
     void mk_pzero(sort * s, expr_ref & result);

@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    echo_tactic.h
+  echo_tactic.h
 
 Abstract:
 
-    Tactic and probe for dumping data.
+Tactic and probe for dumping data.
 
 Author:
 
-    Leonardo (leonardo) 2012-10-20
+Leonardo (leonardo) 2012-10-20
 
 Notes:
 

@@ -1,17 +1,17 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
+  Copyright (c) 2011 Microsoft Corporation
 
-Module Name:
+  Module Name:
 
-    model_evaluator.h
+  model_evaluator.h
 
 Abstract:
 
-    Evaluate expressions in a given model.
+Evaluate expressions in a given model.
 
 Author:
 
-    Leonardo de Moura (leonardo) 2011-04-30.
+Leonardo de Moura (leonardo) 2011-04-30.
 
 Revision History:
 
@@ -29,27 +29,27 @@ class model_core;
 typedef rewriter_exception model_evaluator_exception;
 
 class model_evaluator {
-    struct imp;
-    imp *  m_imp;
-public:
-    model_evaluator(model_core & m, params_ref const & p = params_ref());
-    ~model_evaluator();
+  struct imp;
+  imp *  m_imp;
+  public:
+  model_evaluator(model_core & m, params_ref const & p = params_ref());
+  ~model_evaluator();
 
-    ast_manager & m () const;
-    void set_model_completion(bool f);
-    void set_expand_array_equalities(bool f);
+  ast_manager & m () const;
+  void set_model_completion(bool f);
+  void set_expand_array_equalities(bool f);
 
-    void updt_params(params_ref const & p);
-    static void get_param_descrs(param_descrs & r);
+  void updt_params(params_ref const & p);
+  static void get_param_descrs(param_descrs & r);
 
-    void operator()(expr * t, expr_ref & r);
+  void operator()(expr * t, expr_ref & r);
 
-    expr_ref operator()(expr* t);
+  expr_ref operator()(expr* t);
 
-    void cleanup(params_ref const & p = params_ref());
-    void reset(params_ref const & p = params_ref());
+  void cleanup(params_ref const & p = params_ref());
+  void reset(params_ref const & p = params_ref());
 
-    unsigned get_num_steps() const;
+  unsigned get_num_steps() const;
 };
 
 #endif

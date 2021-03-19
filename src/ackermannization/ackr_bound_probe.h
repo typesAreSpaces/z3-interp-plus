@@ -1,20 +1,20 @@
- /*++
- Copyright (c) 2016 Microsoft Corporation
+/*++
+  Copyright (c) 2016 Microsoft Corporation
 
- Module Name:
+  Module Name:
 
   ackr_bound_probe.h
 
- Abstract:
+Abstract:
 
- A probe to give an upper bound of Ackermann congruence lemmas that a formula might generate.
+A probe to give an upper bound of Ackermann congruence lemmas that a formula might generate.
 
- Author:
+Author:
 
- Mikolas Janota
+Mikolas Janota
 
- Revision History:
- --*/
+Revision History:
+--*/
 #ifndef ACKR_BOUND_PROBE_H_
 #define ACKR_BOUND_PROBE_H_
 
@@ -23,7 +23,7 @@
 probe * mk_ackr_bound_probe();
 
 /*
-  ADD_PROBE("ackr-bound-probe", "A probe to give an upper bound of Ackermann congruence lemmas that a formula might generate.", "mk_ackr_bound_probe()")
-*/
+   ADD_PROBE("ackr-bound-probe", "A probe to give an upper bound of Ackermann congruence lemmas that a formula might generate.", "mk_ackr_bound_probe()")
+   */
 
 #endif /* ACKR_BOUND_PROBE_H_ */
