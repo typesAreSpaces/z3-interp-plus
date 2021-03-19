@@ -1,0 +1,160 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/z3-interp-plus
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +69 src/ast/rewriter/th_rewriter.h
+badd +236 src/ast/rewriter/th_rewriter.cpp
+argglobal
+%argdel
+edit src/ast/rewriter/th_rewriter.cpp
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+wincmd w
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe '1resize ' . ((&lines * 50 + 51) / 102)
+exe 'vert 1resize ' . ((&columns * 118 + 177) / 355)
+exe '2resize ' . ((&lines * 50 + 51) / 102)
+exe 'vert 2resize ' . ((&columns * 118 + 177) / 355)
+exe '3resize ' . ((&lines * 49 + 51) / 102)
+exe 'vert 3resize ' . ((&columns * 118 + 177) / 355)
+exe '4resize ' . ((&lines * 49 + 51) / 102)
+exe 'vert 4resize ' . ((&columns * 118 + 177) / 355)
+exe 'vert 5resize ' . ((&columns * 117 + 177) / 355)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 52 - ((30 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 05|
+wincmd w
+argglobal
+if bufexists("src/ast/rewriter/th_rewriter.cpp") | buffer src/ast/rewriter/th_rewriter.cpp | else | edit src/ast/rewriter/th_rewriter.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 707 - ((25 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+707
+normal! 0
+wincmd w
+argglobal
+if bufexists("src/ast/rewriter/th_rewriter.cpp") | buffer src/ast/rewriter/th_rewriter.cpp | else | edit src/ast/rewriter/th_rewriter.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 120 - ((22 * winheight(0) + 24) / 49)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+120
+normal! 03|
+wincmd w
+argglobal
+if bufexists("src/ast/rewriter/th_rewriter.cpp") | buffer src/ast/rewriter/th_rewriter.cpp | else | edit src/ast/rewriter/th_rewriter.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 212 - ((25 * winheight(0) + 24) / 49)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+212
+normal! 015|
+wincmd w
+argglobal
+if bufexists("src/ast/rewriter/th_rewriter.h") | buffer src/ast/rewriter/th_rewriter.h | else | edit src/ast/rewriter/th_rewriter.h | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 50) / 100)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+wincmd w
+2wincmd w
+exe '1resize ' . ((&lines * 50 + 51) / 102)
+exe 'vert 1resize ' . ((&columns * 118 + 177) / 355)
+exe '2resize ' . ((&lines * 50 + 51) / 102)
+exe 'vert 2resize ' . ((&columns * 118 + 177) / 355)
+exe '3resize ' . ((&lines * 49 + 51) / 102)
+exe 'vert 3resize ' . ((&columns * 118 + 177) / 355)
+exe '4resize ' . ((&lines * 49 + 51) / 102)
+exe 'vert 4resize ' . ((&columns * 118 + 177) / 355)
+exe 'vert 5resize ' . ((&columns * 117 + 177) / 355)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :
