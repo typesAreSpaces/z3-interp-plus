@@ -38,6 +38,7 @@ Notes:
 struct th_rewriter_cfg : public default_rewriter_cfg {
   bool_rewriter       m_b_rw;
   arith_rewriter      m_a_rw;
+  qf_to_rewriter      m_qf_to_rw;
   bv_rewriter         m_bv_rw;
   array_rewriter      m_ar_rw;
   datatype_rewriter   m_dt_rw;
@@ -56,6 +57,7 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
   bool                m_push_ite_bv;
   bool                m_ignore_patterns_on_ground_qbody;
   bool                m_rewrite_patterns;
+  bool                m_is_qf_to;
 
   // substitution support
   expr_dependency_ref m_used_dependencies; // set of dependencies of used substitutions
@@ -171,8 +173,12 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
         // theory dispatch for =
         SASSERT(num == 2);
         family_id s_fid = m().get_sort(args[0])->get_family_id();
-        if (s_fid == m_a_rw.get_fid())
-          st = m_a_rw.mk_eq_core(args[0], args[1], result);
+        if (s_fid == m_a_rw.get_fid()){
+          if(m_is_qf_to)
+            st = m_qf_to_rw.mk_eq_core(args[0], args[1], result);
+          else
+            st = m_a_rw.mk_eq_core(args[0], args[1], result);
+        }
         else if (s_fid == m_bv_rw.get_fid())
           st = m_bv_rw.mk_eq_core(args[0], args[1], result);
         else if (s_fid == m_dt_rw.get_fid())
@@ -203,8 +209,12 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
       }
       return m_b_rw.mk_app_core(f, num, args, result);
     }
-    if (fid == m_a_rw.get_fid())
-      return m_a_rw.mk_app_core(f, num, args, result);
+    if (fid == m_a_rw.get_fid()){
+      if(m_is_qf_to)
+        return m_qf_to_rw.mk_app_core(f, num, args, result);
+      else
+        return m_a_rw.mk_app_core(f, num, args, result);
+    }
     if (fid == m_bv_rw.get_fid())
       return m_bv_rw.mk_app_core(f, num, args, result);
     if (fid == m_ar_rw.get_fid())
@@ -667,9 +677,10 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
     return true;
   }
 
-  th_rewriter_cfg(ast_manager & m, params_ref const & p):
+  th_rewriter_cfg(ast_manager & m, params_ref const & p, bool is_qf_to):
     m_b_rw(m, p),
     m_a_rw(m, p),
+    m_qf_to_rw(m, p),
     m_bv_rw(m, p),
     m_ar_rw(m, p),
     m_dt_rw(m),
@@ -681,6 +692,7 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
     m_bv_util(m),
     m_used_dependencies(m),
     m_subst(nullptr) {
+      m_is_qf_to = is_qf_to;
       updt_local_params(p);
     }
 
@@ -709,9 +721,9 @@ template class rewriter_tpl<th_rewriter_cfg>;
 
 struct th_rewriter::imp : public rewriter_tpl<th_rewriter_cfg> {
   th_rewriter_cfg m_cfg;
-  imp(ast_manager & m, params_ref const & p):
+  imp(ast_manager & m, params_ref const & p, bool is_qf_to):
     rewriter_tpl<th_rewriter_cfg>(m, m.proofs_enabled(), m_cfg),
-    m_cfg(m, p) {
+    m_cfg(m, p, is_qf_to) {
     }
   expr_ref mk_app(func_decl* f, unsigned sz, expr* const* args) {
     return m_cfg.mk_app(f, sz, args);
@@ -722,9 +734,9 @@ struct th_rewriter::imp : public rewriter_tpl<th_rewriter_cfg> {
   }
 };
 
-th_rewriter::th_rewriter(ast_manager & m, params_ref const & p):
-  m_params(p) {
-    m_imp = alloc(imp, m, p);
+th_rewriter::th_rewriter(ast_manager & m, params_ref const & p, bool is_qf_to):
+  m_params(p), m_is_qf_to(is_qf_to) {
+    m_imp = alloc(imp, m, p, is_qf_to);
   }
 
 ast_manager & th_rewriter::m() const {
@@ -760,7 +772,7 @@ unsigned th_rewriter::get_num_steps() const {
 void th_rewriter::cleanup() {
   ast_manager & m = m_imp->m();
   dealloc(m_imp);
-  m_imp = alloc(imp, m, m_params);
+  m_imp = alloc(imp, m, m_params, m_is_qf_to);
 }
 
 void th_rewriter::reset() {
@@ -784,13 +796,6 @@ void th_rewriter::operator()(expr * t, expr_ref & result, proof_ref & result_pr)
 
 void th_rewriter::operator()(expr * n, unsigned num_bindings, expr * const * bindings, expr_ref & result) {
   m_imp->operator()(n, num_bindings, bindings, result);
-}
-
-void th_rewriter::qf_to_reduce(expr * t, expr_ref & result){
-  // TODO:
-  std::cout << "Not implemented yet!" << std::endl;
-  //m_imp_qf_to->operator()(t, result);
-  //m_imp_qf_to->operator()(t, result);
 }
 
 void th_rewriter::set_substitution(expr_substitution * s) {

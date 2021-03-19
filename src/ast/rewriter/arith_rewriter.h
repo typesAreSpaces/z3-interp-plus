@@ -1,6 +1,5 @@
 /*++
-Copyright (c) 2011 Microsoft Corporation
-
+Copyright (c) 2011 Microsoft Corporation 
 Module Name:
 
     arith_rewriter.h
@@ -183,6 +182,15 @@ public:
     br_status mk_sinh_core(expr * arg, expr_ref & result);
     br_status mk_cosh_core(expr * arg, expr_ref & result);
     br_status mk_tanh_core(expr * arg, expr_ref & result);
+};
+
+class qf_to_rewriter : public arith_rewriter {
+
+  public:
+    qf_to_rewriter(ast_manager & m, params_ref const & p = params_ref()):
+      arith_rewriter(m, p) { 
+    // TODO: modify some rewrites from arith_rewriter
+  }
 };
 
 #endif

@@ -30,9 +30,10 @@ class expr_solver;
 class th_rewriter {
   struct imp;
   imp *  m_imp;
+  bool   m_is_qf_to;
   params_ref m_params;
   public:
-  th_rewriter(ast_manager & m, params_ref const & p = params_ref());
+  th_rewriter(ast_manager & m, params_ref const & p = params_ref(), bool is_qf_to = false);
   ~th_rewriter();
 
   ast_manager & m () const;
@@ -46,7 +47,6 @@ class th_rewriter {
   void operator()(expr * t, expr_ref & result);
   void operator()(expr * t, expr_ref & result, proof_ref & result_pr);
   void operator()(expr * n, unsigned num_bindings, expr * const * bindings, expr_ref & result);
-  void qf_to_reduce(expr * t, expr_ref & result);
 
   expr_ref mk_app(func_decl* f, unsigned num_args, expr* const* args);
 

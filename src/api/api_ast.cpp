@@ -704,7 +704,7 @@ extern "C" {
     params_ref p = to_param_ref(_p);
     unsigned timeout     = p.get_uint("timeout", mk_c(c)->get_timeout());
     bool     use_ctrl_c  = p.get_bool("ctrl_c", false);
-    th_rewriter m_rw(m, p);
+    th_rewriter m_rw(m, p, true);
     expr_ref    result(m);
     cancel_eh<reslimit> eh(m.limit());
     api::context::set_interruptable si(*(mk_c(c)), eh);
@@ -712,7 +712,7 @@ extern "C" {
       scoped_ctrl_c ctrlc(eh, false, use_ctrl_c);
       scoped_timer timer(timeout, &eh);
       try {
-        m_rw.qf_to_reduce(a, result);
+        m_rw(a, result);
       }
       catch (z3_exception & ex) {
         mk_c(c)->handle_exception(ex);
