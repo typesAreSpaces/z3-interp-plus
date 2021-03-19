@@ -4633,6 +4633,16 @@ def_API('Z3_mk_func_decl', FUNC_DECL, (_in(CONTEXT), _in(SYMBOL), _in(UINT), _in
     */
   Z3_ast Z3_API Z3_simplify(Z3_context c, Z3_ast a);
 
+  /** 
+    \brief Interface to QF_TO simplifier
+
+    Provides an interface to the AST simplifier for quantifier
+    free term in the language of total order.
+    It returns an AST object which is equal to the argument.
+    The returned AST is simplified using algebraic simplification rules,
+    */
+  Z3_ast Z3_API Z3_qf_to_simplify(Z3_context c, Z3_ast a);
+
   /**
     \brief Interface to simplifier.
 

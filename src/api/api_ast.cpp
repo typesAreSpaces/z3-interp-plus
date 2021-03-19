@@ -696,10 +696,44 @@ extern "C" {
     Z3_CATCH_RETURN(nullptr);
   }
 
+  static Z3_ast qf_to_simplify(Z3_context c, Z3_ast _a, Z3_params _p) {
+    Z3_TRY;
+    RESET_ERROR_CODE();
+    ast_manager & m = mk_c(c)->m();
+    expr * a = to_expr(_a);
+    params_ref p = to_param_ref(_p);
+    unsigned timeout     = p.get_uint("timeout", mk_c(c)->get_timeout());
+    bool     use_ctrl_c  = p.get_bool("ctrl_c", false);
+    th_rewriter m_rw(m, p);
+    expr_ref    result(m);
+    cancel_eh<reslimit> eh(m.limit());
+    api::context::set_interruptable si(*(mk_c(c)), eh);
+    {
+      scoped_ctrl_c ctrlc(eh, false, use_ctrl_c);
+      scoped_timer timer(timeout, &eh);
+      try {
+        m_rw.qf_to_reduce(a, result);
+      }
+      catch (z3_exception & ex) {
+        mk_c(c)->handle_exception(ex);
+        return nullptr;
+      }
+    }
+    mk_c(c)->save_ast_trail(result);
+    return of_ast(result.get());
+    Z3_CATCH_RETURN(nullptr);
+  }
+
   Z3_ast Z3_API Z3_simplify(Z3_context c, Z3_ast _a) {
     LOG_Z3_simplify(c, _a);
     RETURN_Z3(simplify(c, _a, nullptr));
   }
+
+  Z3_ast Z3_API Z3_qf_to_simplify(Z3_context c, Z3_ast _a) {
+    LOG_Z3_simplify(c, _a);
+    RETURN_Z3(qf_to_simplify(c, _a, nullptr));
+  }
+
 
   Z3_ast Z3_API Z3_simplify_ex(Z3_context c, Z3_ast _a, Z3_params p) {
     LOG_Z3_simplify_ex(c, _a, p);
