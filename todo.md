@@ -1,3 +1,3 @@
-# TODO
+# TODOS
 
-- Indent all files with using vim -s indent_file <file>
+- Implement reduce_app method in qf_to_rewriter
