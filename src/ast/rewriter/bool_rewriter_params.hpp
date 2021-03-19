@@ -7,7 +7,7 @@ struct bool_rewriter_params {
   params_ref const & p;
   params_ref g;
   bool_rewriter_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("rewriter")) {}
+     p(_p), g(gparams::get_module("rewriter")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("ite_extra_rules", CPK_BOOL, "extra ite simplifications, these additional simplifications may reduce size locally but increase globally", "false","rewriter");
     d.insert("flat", CPK_BOOL, "create nary applications for and,or,+,*,bvadd,bvmul,bvand,bvor,bvxor", "true","rewriter");
@@ -19,7 +19,7 @@ struct bool_rewriter_params {
   }
   /*
      REG_MODULE_PARAMS('rewriter', 'bool_rewriter_params::collect_param_descrs')
-     */
+  */
   bool ite_extra_rules() const { return p.get_bool("ite_extra_rules", g, false); }
   bool flat() const { return p.get_bool("flat", g, true); }
   bool elim_and() const { return p.get_bool("elim_and", g, false); }

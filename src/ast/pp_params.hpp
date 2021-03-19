@@ -7,7 +7,7 @@ struct pp_params {
   params_ref const & p;
   params_ref g;
   pp_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("pp")) {}
+     p(_p), g(gparams::get_module("pp")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("max_indent", CPK_UINT, "max. indentation in pretty printer", "4294967295","pp");
     d.insert("max_num_lines", CPK_UINT, "max. number of lines to be displayed in pretty printer", "4294967295","pp");
@@ -30,7 +30,7 @@ struct pp_params {
   /*
      REG_MODULE_PARAMS('pp', 'pp_params::collect_param_descrs')
      REG_MODULE_DESCRIPTION('pp', 'pretty printer')
-     */
+  */
   unsigned max_indent() const { return p.get_uint("max_indent", g, 4294967295u); }
   unsigned max_num_lines() const { return p.get_uint("max_num_lines", g, 4294967295u); }
   unsigned max_width() const { return p.get_uint("max_width", g, 80u); }

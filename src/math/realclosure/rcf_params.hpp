@@ -7,7 +7,7 @@ struct rcf_params {
   params_ref const & p;
   params_ref g;
   rcf_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("rcf")) {}
+     p(_p), g(gparams::get_module("rcf")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("use_prem", CPK_BOOL, "use pseudo-remainder instead of remainder when computing GCDs and Sturm-Tarski sequences", "true","rcf");
     d.insert("clean_denominators", CPK_BOOL, "clean denominators before root isolation", "true","rcf");
@@ -19,7 +19,7 @@ struct rcf_params {
   /*
      REG_MODULE_PARAMS('rcf', 'rcf_params::collect_param_descrs')
      REG_MODULE_DESCRIPTION('rcf', 'real closed fields')
-     */
+  */
   bool use_prem() const { return p.get_bool("use_prem", g, true); }
   bool clean_denominators() const { return p.get_bool("clean_denominators", g, true); }
   unsigned initial_precision() const { return p.get_uint("initial_precision", g, 24u); }

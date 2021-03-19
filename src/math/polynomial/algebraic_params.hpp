@@ -7,7 +7,7 @@ struct algebraic_params {
   params_ref const & p;
   params_ref g;
   algebraic_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("algebraic")) {}
+     p(_p), g(gparams::get_module("algebraic")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("zero_accuracy", CPK_UINT, "one of the most time-consuming operations in the real algebraic number module is determining the sign of a polynomial evaluated at a sample point with non-rational algebraic number values. Let k be the value of this option. If k is 0, Z3 uses precise computation. Otherwise, the result of a polynomial evaluation is considered to be 0 if Z3 can show it is inside the interval (-1/2^k, 1/2^k)", "0","algebraic");
     d.insert("min_mag", CPK_UINT, "Z3 represents algebraic numbers using a (square-free) polynomial p and an isolating interval (which contains one and only one root of p). This interval may be refined during the computations. This parameter specifies whether to cache the value of a refined interval or not. It says the minimal size of an interval for caching purposes is 1/2^16", "16","algebraic");
@@ -19,7 +19,7 @@ struct algebraic_params {
   /*
      REG_MODULE_PARAMS('algebraic', 'algebraic_params::collect_param_descrs')
      REG_MODULE_DESCRIPTION('algebraic', 'real algebraic number package')
-     */
+  */
   unsigned zero_accuracy() const { return p.get_uint("zero_accuracy", g, 0u); }
   unsigned min_mag() const { return p.get_uint("min_mag", g, 16u); }
   bool factor() const { return p.get_bool("factor", g, true); }

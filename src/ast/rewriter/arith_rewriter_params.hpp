@@ -7,7 +7,7 @@ struct arith_rewriter_params {
   params_ref const & p;
   params_ref g;
   arith_rewriter_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("rewriter")) {}
+     p(_p), g(gparams::get_module("rewriter")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("algebraic_number_evaluator", CPK_BOOL, "simplify/evaluate expressions containing (algebraic) irrational numbers.", "true","rewriter");
     d.insert("mul_to_power", CPK_BOOL, "collpase (* t ... t) into (^ t k), it is ignored if expand_power is true.", "false","rewriter");
@@ -25,7 +25,7 @@ struct arith_rewriter_params {
   }
   /*
      REG_MODULE_PARAMS('rewriter', 'arith_rewriter_params::collect_param_descrs')
-     */
+  */
   bool algebraic_number_evaluator() const { return p.get_bool("algebraic_number_evaluator", g, true); }
   bool mul_to_power() const { return p.get_bool("mul_to_power", g, false); }
   bool expand_power() const { return p.get_bool("expand_power", g, false); }

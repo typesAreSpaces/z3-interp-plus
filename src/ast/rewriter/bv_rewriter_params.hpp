@@ -7,7 +7,7 @@ struct bv_rewriter_params {
   params_ref const & p;
   params_ref g;
   bv_rewriter_params(params_ref const & _p = params_ref::get_empty()):
-    p(_p), g(gparams::get_module("rewriter")) {}
+     p(_p), g(gparams::get_module("rewriter")) {}
   static void collect_param_descrs(param_descrs & d) {
     d.insert("udiv2mul", CPK_BOOL, "convert constant udiv to mul", "false","rewriter");
     d.insert("split_concat_eq", CPK_BOOL, "split equalities of the form (= (concat t1 t2) t3)", "false","rewriter");
@@ -27,7 +27,7 @@ struct bv_rewriter_params {
   }
   /*
      REG_MODULE_PARAMS('rewriter', 'bv_rewriter_params::collect_param_descrs')
-     */
+  */
   bool udiv2mul() const { return p.get_bool("udiv2mul", g, false); }
   bool split_concat_eq() const { return p.get_bool("split_concat_eq", g, false); }
   bool bit2bool() const { return p.get_bool("bit2bool", g, true); }
