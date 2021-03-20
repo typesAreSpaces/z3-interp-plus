@@ -47,6 +47,8 @@ class arith_rewriter_core {
 };
 
 class arith_rewriter : public poly_rewriter<arith_rewriter_core> {
+  friend class qf_to_rewriter;
+
   bool m_arith_lhs;
   bool m_arith_ineq_lhs;
   bool m_gcd_rounding;
@@ -186,11 +188,18 @@ class arith_rewriter : public poly_rewriter<arith_rewriter_core> {
 
 class qf_to_rewriter : public arith_rewriter {
 
+  br_status mk_le_ge_eq_core(expr * arg1, expr * arg2, op_kind kind, expr_ref & result);
+
   public:
-    qf_to_rewriter(ast_manager & m, params_ref const & p = params_ref()):
-      arith_rewriter(m, p) { 
-        // TODO: modify some rewrites from arith_rewriter
-      }
+  qf_to_rewriter(ast_manager & m, params_ref const & p = params_ref()):
+    arith_rewriter(m, p) { }
+
+  br_status mk_app_core(func_decl * f, unsigned num_args, expr * const * args, expr_ref & result);
+
+  br_status mk_le_core(expr * arg1, expr * arg2, expr_ref & result);
+  br_status mk_lt_core(expr * arg1, expr * arg2, expr_ref & result);
+  br_status mk_ge_core(expr * arg1, expr * arg2, expr_ref & result);
+  br_status mk_gt_core(expr * arg1, expr * arg2, expr_ref & result);
 };
 
 #endif
