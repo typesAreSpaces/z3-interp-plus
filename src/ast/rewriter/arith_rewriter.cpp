@@ -1711,7 +1711,7 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
     arg1 = new_arg1;
     arg2 = new_arg2;
   }
-
+  
   numeral a1, a2;
   if (is_numeral(arg1, a1) && is_numeral(arg2, a2)) {
     switch (kind) {
@@ -1721,43 +1721,7 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
     }
   }
 
-  bool is_int = m_util.is_int(arg1);
-  if (is_int && m_gcd_rounding) {
-    bool first = true;
-    numeral g;
-    unsigned num_consts = 0;
-    get_coeffs_gcd(arg1, g, first, num_consts);
-    TRACE("arith_rewriter_gcd", tout << "[step1] g: " << g << ", num_consts: " << num_consts << "\n";);
-    if ((first || !g.is_one()) && num_consts <= 1)
-      get_coeffs_gcd(arg2, g, first, num_consts);
-    TRACE("arith_rewriter_gcd", tout << "[step2] g: " << g << ", num_consts: " << num_consts << "\n";);
-    if (!first && !g.is_one() && num_consts <= 1) {
-      bool is_sat = div_polynomial(arg1, g, (kind == LE ? CT_CEIL : (kind == GE ? CT_FLOOR : CT_FALSE)), new_arg1);
-      if (!is_sat) {
-        result = m().mk_false();
-        return BR_DONE;
-      }
-      is_sat = div_polynomial(arg2, g, (kind == LE ? CT_FLOOR : (kind == GE ? CT_CEIL : CT_FALSE)), new_arg2);
-      if (!is_sat) {
-        result = m().mk_false();
-        return BR_DONE;
-      }
-      arg1 = new_arg1.get();
-      arg2 = new_arg2.get();
-      st = BR_DONE;
-    }
-  }
-
-  if ((m_arith_lhs || m_arith_ineq_lhs) && is_numeral(arg2, a2) && is_neg_poly(arg1, new_arg1)) {
-    a2.neg();
-    new_arg2 = m_util.mk_numeral(a2, m_util.is_int(new_arg1));
-    switch (kind) {
-      case LE: result = m_util.mk_ge(new_arg1, new_arg2); return BR_DONE;
-      case GE: result = m_util.mk_le(new_arg1, new_arg2); return BR_DONE;
-      case EQ: result = m_util.mk_eq(new_arg1, new_arg2); return BR_DONE;
-    }
-  }
-  else if (st == BR_DONE && arg1 == orig_arg1 && arg2 == orig_arg2) {
+  if (st == BR_DONE && arg1 == orig_arg1 && arg2 == orig_arg2) {
     // Nothing new; return BR_FAILED to avoid rewriting loops.
     return BR_FAILED;
   }
