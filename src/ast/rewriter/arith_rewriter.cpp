@@ -1721,11 +1721,6 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
     }
   }
 
-  if (is_bound(arg1, arg2, kind, result))
-    return BR_DONE;
-  if (is_bound(arg2, arg1, inv(kind), result))
-    return BR_DONE;
-
   bool is_int = m_util.is_int(arg1);
   if (is_int && m_gcd_rounding) {
     bool first = true;
