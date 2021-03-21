@@ -13,10 +13,10 @@ badd +34 src/ast/rewriter/th_rewriter.h
 badd +1 src/test/arith_rewriter.cpp
 badd +73 src/ast/rewriter/arith_rewriter.h
 badd +30 src/ast/rewriter/arith_rewriter.cpp
-badd +69 src/ast/arith_decl_plugin.h
+badd +1 src/ast/arith_decl_plugin.h
 badd +2259 src/ast/ast.h
 badd +112 src/util/obj_ref.h
-badd +0 src/ast/arith_decl_plugin.cpp
+badd +1 src/ast/arith_decl_plugin.cpp
 argglobal
 %argdel
 edit src/ast/arith_decl_plugin.h
@@ -43,13 +43,13 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 25 + 39) / 78)
-exe 'vert 1resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 1resize ' . ((&columns * 91 + 138) / 276)
 exe '2resize ' . ((&lines * 25 + 39) / 78)
-exe 'vert 2resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 2resize ' . ((&columns * 91 + 138) / 276)
 exe '3resize ' . ((&lines * 24 + 39) / 78)
-exe 'vert 3resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 4resize ' . ((&columns * 102 + 155) / 310)
-exe 'vert 5resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 276)
+exe 'vert 4resize ' . ((&columns * 92 + 138) / 276)
+exe 'vert 5resize ' . ((&columns * 91 + 138) / 276)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -60,7 +60,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 157 - ((21 * winheight(0) + 12) / 25)
+let s:l = 157 - ((0 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -78,7 +78,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 27 - ((12 * winheight(0) + 12) / 25)
+let s:l = 27 - ((0 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -96,7 +96,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 191 - ((6 * winheight(0) + 12) / 24)
+let s:l = 191 - ((0 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -114,12 +114,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1730 - ((16 * winheight(0) + 38) / 76)
+let s:l = 1724 - ((31 * winheight(0) + 38) / 76)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1730
-normal! 019|
+1724
+normal! 04|
 wincmd w
 argglobal
 if bufexists("src/ast/rewriter/arith_rewriter.cpp") | buffer src/ast/rewriter/arith_rewriter.cpp | else | edit src/ast/rewriter/arith_rewriter.cpp | endif
@@ -132,22 +132,22 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 170 - ((5 * winheight(0) + 38) / 76)
+let s:l = 200 - ((36 * winheight(0) + 38) / 76)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-170
-normal! 018|
+200
+normal! 011|
 wincmd w
-4wincmd w
+5wincmd w
 exe '1resize ' . ((&lines * 25 + 39) / 78)
-exe 'vert 1resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 1resize ' . ((&columns * 91 + 138) / 276)
 exe '2resize ' . ((&lines * 25 + 39) / 78)
-exe 'vert 2resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 2resize ' . ((&columns * 91 + 138) / 276)
 exe '3resize ' . ((&lines * 24 + 39) / 78)
-exe 'vert 3resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 4resize ' . ((&columns * 102 + 155) / 310)
-exe 'vert 5resize ' . ((&columns * 103 + 155) / 310)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 276)
+exe 'vert 4resize ' . ((&columns * 92 + 138) / 276)
+exe 'vert 5resize ' . ((&columns * 91 + 138) / 276)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

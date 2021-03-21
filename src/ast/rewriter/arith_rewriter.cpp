@@ -1698,10 +1698,8 @@ br_status qf_to_rewriter::mk_app_core(func_decl * f, unsigned num_args, expr * c
   return st;
 }
 
-br_status qf_to_rewriter::mk_le_ge_eq_core(
-    expr * arg1, expr * arg2, 
-    op_kind kind, 
-    expr_ref & result) {
+br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2, 
+    op_kind kind, expr_ref & result) {
 
   expr *orig_arg1 = arg1, *orig_arg2 = arg2;
 
@@ -1725,7 +1723,6 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(
 
   if (is_bound(arg1, arg2, kind, result))
     return BR_DONE;
-
   if (is_bound(arg2, arg1, inv(kind), result))
     return BR_DONE;
 
