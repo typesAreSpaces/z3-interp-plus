@@ -1698,31 +1698,22 @@ br_status qf_to_rewriter::mk_app_core(func_decl * f, unsigned num_args, expr * c
   return st;
 }
 
-br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2, op_kind kind, expr_ref & result) {
+br_status qf_to_rewriter::mk_le_ge_eq_core(
+    expr * arg1, expr * arg2, 
+    op_kind kind, 
+    expr_ref & result) {
+
   expr *orig_arg1 = arg1, *orig_arg2 = arg2;
+
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
-  if ((is_zero(arg1) && is_reduce_power_target(arg2, kind == EQ)) ||
-      (is_zero(arg2) && is_reduce_power_target(arg1, kind == EQ)))
-    return reduce_power(arg1, arg2, kind, result);
-  //br_status st = cancel_monomials(arg1, arg2, m_arith_ineq_lhs || m_arith_lhs, new_arg1, new_arg2);
   br_status st = cancel_monomials(arg1, arg2, true, new_arg1, new_arg2);
-  // [TODO] remove the following line
-  std::cout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
     arg1 = new_arg1;
     arg2 = new_arg2;
   }
-  expr_ref new_new_arg1(m());
-  expr_ref new_new_arg2(m());
-  if (m_elim_to_real && elim_to_real(arg1, arg2, new_new_arg1, new_new_arg2)) {
-    arg1 = new_new_arg1;
-    arg2 = new_new_arg2;
-    CTRACE("elim_to_real", m_elim_to_real, tout << "after_elim_to_real\n" << mk_ismt2_pp(arg1, m()) << "\n" << mk_ismt2_pp(arg2, m()) << "\n";);
-    if (st == BR_FAILED)
-      st = BR_DONE;
-  }
+
   numeral a1, a2;
   if (is_numeral(arg1, a1) && is_numeral(arg2, a2)) {
     switch (kind) {
@@ -1732,40 +1723,12 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2, op_kind kin
     }
   }
 
-#define ANUM_LE_GE_EQ() {                                                               \
-  switch (kind) {                                                                     \
-    case LE: result = am.le(v1, v2) ? m().mk_true() : m().mk_false(); return BR_DONE;   \
-    case GE: result = am.ge(v1, v2) ? m().mk_true() : m().mk_false(); return BR_DONE;   \
-    default: result = am.eq(v1, v2) ? m().mk_true() : m().mk_false(); return BR_DONE;   \
-  }                                                                                   \
-}
+  if (is_bound(arg1, arg2, kind, result))
+    return BR_DONE;
 
-if (m_anum_simp) {
-  if (is_numeral(arg1, a1) && m_util.is_irrational_algebraic_numeral(arg2)) {
-    anum_manager & am = m_util.am();
-    scoped_anum v1(am);
-    am.set(v1, a1.to_mpq());
-    anum const & v2 = m_util.to_irrational_algebraic_numeral(arg2);
-    ANUM_LE_GE_EQ();
-  }
-  if (m_util.is_irrational_algebraic_numeral(arg1) && is_numeral(arg2, a2)) {
-    anum_manager & am = m_util.am();
-    anum const & v1 = m_util.to_irrational_algebraic_numeral(arg1);
-    scoped_anum v2(am);
-    am.set(v2, a2.to_mpq());
-    ANUM_LE_GE_EQ();
-  }
-  if (m_util.is_irrational_algebraic_numeral(arg1) && m_util.is_irrational_algebraic_numeral(arg2)) {
-    anum_manager & am = m_util.am();
-    anum const & v1 = m_util.to_irrational_algebraic_numeral(arg1);
-    anum const & v2 = m_util.to_irrational_algebraic_numeral(arg2);
-    ANUM_LE_GE_EQ();
-  }
-}
-if (is_bound(arg1, arg2, kind, result))
-  return BR_DONE;
-if (is_bound(arg2, arg1, inv(kind), result))
-  return BR_DONE;
+  if (is_bound(arg2, arg1, inv(kind), result))
+    return BR_DONE;
+
   bool is_int = m_util.is_int(arg1);
   if (is_int && m_gcd_rounding) {
     bool first = true;
@@ -1792,27 +1755,29 @@ if (is_bound(arg2, arg1, inv(kind), result))
       st = BR_DONE;
     }
   }
-if ((m_arith_lhs || m_arith_ineq_lhs) && is_numeral(arg2, a2) && is_neg_poly(arg1, new_arg1)) {
-  a2.neg();
-  new_arg2 = m_util.mk_numeral(a2, m_util.is_int(new_arg1));
-  switch (kind) {
-    case LE: result = m_util.mk_ge(new_arg1, new_arg2); return BR_DONE;
-    case GE: result = m_util.mk_le(new_arg1, new_arg2); return BR_DONE;
-    case EQ: result = m_util.mk_eq(new_arg1, new_arg2); return BR_DONE;
+
+  if ((m_arith_lhs || m_arith_ineq_lhs) && is_numeral(arg2, a2) && is_neg_poly(arg1, new_arg1)) {
+    a2.neg();
+    new_arg2 = m_util.mk_numeral(a2, m_util.is_int(new_arg1));
+    switch (kind) {
+      case LE: result = m_util.mk_ge(new_arg1, new_arg2); return BR_DONE;
+      case GE: result = m_util.mk_le(new_arg1, new_arg2); return BR_DONE;
+      case EQ: result = m_util.mk_eq(new_arg1, new_arg2); return BR_DONE;
+    }
   }
-}
-else if (st == BR_DONE && arg1 == orig_arg1 && arg2 == orig_arg2) {
-  // Nothing new; return BR_FAILED to avoid rewriting loops.
+  else if (st == BR_DONE && arg1 == orig_arg1 && arg2 == orig_arg2) {
+    // Nothing new; return BR_FAILED to avoid rewriting loops.
+    return BR_FAILED;
+  }
+  else if (st != BR_FAILED) {
+    switch (kind) {
+      case LE: result = m_util.mk_le(arg1, arg2); return BR_DONE;
+      case GE: result = m_util.mk_ge(arg1, arg2); return BR_DONE;
+      default: result = m().mk_eq(arg1, arg2); return BR_DONE;
+    }
+  }
+
   return BR_FAILED;
-}
-else if (st != BR_FAILED) {
-  switch (kind) {
-    case LE: result = m_util.mk_le(arg1, arg2); return BR_DONE;
-    case GE: result = m_util.mk_ge(arg1, arg2); return BR_DONE;
-    default: result = m().mk_eq(arg1, arg2); return BR_DONE;
-  }
-}
-return BR_FAILED;
 }
 
 br_status qf_to_rewriter::mk_le_core(expr * arg1, expr * arg2, expr_ref & result) {
@@ -1825,7 +1790,7 @@ br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result
 }
 
 br_status qf_to_rewriter::mk_ge_core(expr * arg1, expr * arg2, expr_ref & result) {
-  return mk_le_ge_eq_core(arg1, arg2, GE, result);
+  return mk_le_ge_eq_core(arg2, arg1, LE, result);
 }
 
 br_status qf_to_rewriter::mk_gt_core(expr * arg1, expr * arg2, expr_ref & result) {
