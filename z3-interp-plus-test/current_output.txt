@@ -1,0 +1,22 @@
+simplifying a1
+qf_to_simplifying a1
+qf_to_simplifying a1_2
+qf_to_simplifying a2
+qf_to_simplifying a2_2
+qf_to_simplifying a3
+qf_to_simplifying a4
+qf_to_simplifying a5
+a1
+(not (<= (+ y (* (- 1) x)) (- 12)))
+a1_2
+(not (<= (+ (* (- 1) x) y) (- 12)))
+a2
+(not (<= (+ y (* (- 1) x)) 12))
+a2_2
+(not (<= (+ (* (- 1) x) y) 12))
+a3
+(not (<= (+ y (* (- 1) x)) 12))
+a4
+(not (<= (+ y (* (- 1) x)) (- 12)))
+a5
+(not (<= (+ y (* (- 1) x)) 0))
