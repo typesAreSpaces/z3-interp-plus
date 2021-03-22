@@ -1705,7 +1705,9 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
 
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
-  br_status st = cancel_monomials(arg1, arg2, true, new_arg1, new_arg2);
+  bool is_c_at_rhs = true;
+  br_status st = only_non_neg_monomials(arg1, arg2, new_arg1, new_arg2, is_c_at_rhs);
+  // [TODO]: use c to check if the expression is a QF_TO term
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
     arg1 = new_arg1;

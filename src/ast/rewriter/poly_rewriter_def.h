@@ -883,21 +883,219 @@ br_status poly_rewriter<Config>::cancel_monomials(expr * lhs, expr * rhs, bool m
   return BR_DONE;
 }
 
-#define TO_BUFFER(_tester_, _buffer_, _e_)                       \
-  _buffer_.push_back(_e_);                                     \
-  for (unsigned _i = 0; _i < _buffer_.size(); ) {                \
-    expr* _e = _buffer_[_i];                                  \
-    if (_tester_(_e)) {                                      \
-      app* a = to_app(_e);                                 \
-      _buffer_[_i] = a->get_arg(0);                        \
-      for (unsigned _j = 1; _j < a->get_num_args(); ++_j) {       \
-        _buffer_.push_back(a->get_arg(_j));                    \
-      }                                                   \
+/**
+  \brief Cancel/Combine monomials that occur is the left and right hand sides.
+  Both sides only have non negative monomials
+
+  */
+template<typename Config>
+br_status poly_rewriter<Config>::only_non_neg_monomials(expr * lhs, expr * rhs, 
+    expr_ref & lhs_result, expr_ref & rhs_result, 
+    bool & is_c_at_rhs) {
+  set_curr_sort(m().get_sort(lhs));
+  unsigned lhs_sz;
+  expr * const * lhs_monomials = get_monomials(lhs, lhs_sz);
+  unsigned rhs_sz;
+  expr * const * rhs_monomials = get_monomials(rhs, rhs_sz);
+
+  expr_fast_mark1 visited;  // visited.is_marked(power_product) if the power_product occurs in lhs or rhs
+  expr_fast_mark2 multiple; // multiple.is_marked(power_product) if power_product occurs more than once
+  bool has_multiple = false;
+
+  numeral a;
+  numeral zero(0);
+  numeral c(0);
+  unsigned num_coeffs = 0;
+
+  // Part 1: Visit monomials and collect numerals from lhs and rhs
+
+  for (unsigned i = 0; i < lhs_sz; i++) {
+    expr * arg = lhs_monomials[i];
+    if (is_numeral(arg, a)) {
+      c += a;
+      num_coeffs++;
+    }
+    else {
+      visited.mark(get_power_product(arg));
+    }
+  }
+
+  if (num_coeffs == 0 && is_numeral(rhs)) {
+    TRACE("mk_le_bug", tout << "no coeffs\n";);
+    return BR_FAILED;
+  }
+
+  for (unsigned i = 0; i < rhs_sz; i++) {
+    expr * arg = rhs_monomials[i];
+    if (is_numeral(arg, a)) {
+      c -= a;
+      num_coeffs++;
+    }
+    else {
+      expr * pp = get_power_product(arg);
+      if (visited.is_marked(pp)) {
+        multiple.mark(pp);
+        has_multiple = true;
+      }
+    }
+  }
+
+  normalize(c);
+
+  if (!has_multiple && num_coeffs <= 1) {
+    if (is_numeral(rhs)) {
+      return BR_FAILED;
+    }
+  }
+
+  // Part 2: Collect coefficients from monomials marked as 'multiple'
+  // from lhs and rhs 
+  // and substract accordingly, i.e. move 'multiple' monomials to lhs
+  // Ignore monomials not marked as multiple
+  
+  buffer<numeral>  coeffs;
+  m_expr2pos.reset();
+  for (unsigned i = 0; i < lhs_sz; i++) {
+    expr * arg = lhs_monomials[i];
+    if (is_numeral(arg))
+      continue;
+    expr * pp = get_power_product(arg, a);
+    if (!multiple.is_marked(pp))
+      continue;
+    unsigned pos;
+    if (m_expr2pos.find(pp, pos)) {
+      coeffs[pos] += a;
+    }
+    else {
+      m_expr2pos.insert(pp, coeffs.size());
+      coeffs.push_back(a);
+    }
+  }
+
+  for (unsigned i = 0; i < rhs_sz; i++) {
+    expr * arg = rhs_monomials[i];
+    if (is_numeral(arg))
+      continue;
+    expr * pp = get_power_product(arg, a);
+    if (!multiple.is_marked(pp))
+      continue;
+    unsigned pos = UINT_MAX;
+    m_expr2pos.find(pp, pos);
+    SASSERT(pos != UINT_MAX);
+    coeffs[pos] -= a;
+  }
+
+  // Part 3: Construct new monomials
+  // Move the monomials around lhs and rhs
+  // according to the sign of their coefficient
+
+  ptr_buffer<expr> new_lhs_monomials;
+  new_lhs_monomials.push_back(0); // save space for coefficient if needed
+  ptr_buffer<expr> new_rhs_monomials;
+  new_rhs_monomials.push_back(0); // save space for coefficient if needed
+  visited.reset();
+
+  for (unsigned i = 0; i < lhs_sz; i++) {
+    expr * arg = lhs_monomials[i];
+    if (is_numeral(arg))
+      continue;
+    expr * pp = get_power_product(arg, a);
+    if (!multiple.is_marked(pp)) {
+      if (a < zero) {
+        if (a.is_minus_one())
+          new_rhs_monomials.push_back(pp);
+        else {
+          a.neg();
+          SASSERT(!a.is_one());
+          expr * args[2] = { mk_numeral(a), pp };
+          new_rhs_monomials.push_back(mk_mul_app(2, args));
+        }
+      }
+      else
+        new_lhs_monomials.push_back(arg);
+    }
+    else if (!visited.is_marked(pp)) {
+      visited.mark(pp);
+      unsigned pos = UINT_MAX;
+      m_expr2pos.find(pp, pos);
+      SASSERT(pos != UINT_MAX);
+      a = coeffs[pos];
+      if (!a.is_zero()){
+        if (a < zero) {
+          if (a.is_minus_one())
+            new_rhs_monomials.push_back(pp);
+          else {
+            a.neg();
+            expr * args[2] = { mk_numeral(a), pp };
+            new_rhs_monomials.push_back(mk_mul_app(2, args));
+          }
+        }
+        else
+          new_lhs_monomials.push_back(arg);
+      }
+    }
+  }
+
+  for (unsigned i = 0; i < rhs_sz; i++) {
+    expr * arg = rhs_monomials[i];
+    if (is_numeral(arg))
+      continue;
+    expr * pp = get_power_product(arg, a);
+    if (!multiple.is_marked(pp)) {
+      if (!a.is_zero()) {
+        if(a < zero){
+          if(a.is_minus_one())
+            new_lhs_monomials.push_back(pp);
+          else {
+            a.neg();
+            expr * args[2] = { mk_numeral(a), pp };
+            new_lhs_monomials.push_back(mk_mul_app(2, args));
+          }
+        }
+        else
+          new_rhs_monomials.push_back(arg);
+      }
+    }
+  }
+  
+  // Part 4: Update location of constant
+  bool c_at_rhs = false;
+  if(zero > c){
+    c_at_rhs = true;
+    c.neg();
+    normalize(c);
+  }
+  is_c_at_rhs = c_at_rhs;
+
+  // When recreating the lhs and rhs also insert coefficient on the appropriate side.
+  // Ignore coefficient if it's 0 and there are no other summands.
+  const bool insert_c_lhs = !c_at_rhs && (new_lhs_monomials.size() == 1 || !c.is_zero());
+  const bool insert_c_rhs =  c_at_rhs && (new_rhs_monomials.size() == 1 || !c.is_zero());
+  const unsigned lhs_offset = insert_c_lhs ? 0 : 1;
+  const unsigned rhs_offset = insert_c_rhs ? 0 : 1;
+  new_rhs_monomials[0] = insert_c_rhs ? mk_numeral(c) : nullptr;
+  new_lhs_monomials[0] = insert_c_lhs ? mk_numeral(c) : nullptr;
+  lhs_result = mk_add_app(new_lhs_monomials.size() - lhs_offset, new_lhs_monomials.c_ptr() + lhs_offset);
+  rhs_result = mk_add_app(new_rhs_monomials.size() - rhs_offset, new_rhs_monomials.c_ptr() + rhs_offset);
+  TRACE("mk_le_bug", tout << lhs_result << " " << rhs_result << "\n";);
+  return BR_DONE;
+}
+
+#define TO_BUFFER(_tester_, _buffer_, _e_)                  \
+  _buffer_.push_back(_e_);                                  \
+  for (unsigned _i = 0; _i < _buffer_.size(); ) {           \
+    expr* _e = _buffer_[_i];                                \
+    if (_tester_(_e)) {                                     \
+      app* a = to_app(_e);                                  \
+      _buffer_[_i] = a->get_arg(0);                         \
+      for (unsigned _j = 1; _j < a->get_num_args(); ++_j) { \
+        _buffer_.push_back(a->get_arg(_j));                 \
+      }                                                     \
     }                                                       \
     else {                                                  \
-      ++_i;                                                \
+      ++_i;                                                 \
     }                                                       \
-  }                                                           \
+  }                                                         \
 
 template<typename Config>
 bool poly_rewriter<Config>::hoist_multiplication(expr_ref& som) {

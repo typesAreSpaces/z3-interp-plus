@@ -77,6 +77,7 @@ class poly_rewriter : public Config {
     }
 
     br_status cancel_monomials(expr * lhs, expr * rhs, bool move, expr_ref & lhs_result, expr_ref & rhs_result);
+    br_status only_non_neg_monomials(expr * lhs, expr * rhs, expr_ref & lhs_result, expr_ref & rhs_result, bool &);
 
     bool hoist_multiplication(expr_ref& som);
     expr* merge_muls(expr* x, expr* y);

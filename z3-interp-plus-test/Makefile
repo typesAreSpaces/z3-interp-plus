@@ -21,19 +21,13 @@ all: test
 test:
 	@$(CC) ./test.cpp \
 		$(LDIR)/libz3.$(SO_EXT) -o $@
-	@./$@ > current_output.txt
+	@./$@ 
 	@rm $@
-	if [ -z $(IS_SAME) ]; then\
-		echo "Ok! Keep going";\
-		else\
-		echo "Some change just ruined this test";\
-		fi;
-
-# -----------------------------
+	# -----------------------------
 
 # ------------------------------
 #  Cleaning
 .PHONY: clean
 clean:
 	@echo "Cleaned"
-# ------------------------------
+	# ------------------------------
