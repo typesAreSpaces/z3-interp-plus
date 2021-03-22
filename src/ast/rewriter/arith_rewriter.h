@@ -189,7 +189,8 @@ class arith_rewriter : public poly_rewriter<arith_rewriter_core> {
 class qf_to_rewriter : public arith_rewriter {
 
   enum QF_TO_OP { LE, LT };
-  br_status qf_to_normalizer(expr * arg1, expr * arg2, QF_TO_OP kind, expr_ref & result);
+  br_status qf_to_normalizer(expr * arg1, expr * arg2, QF_TO_OP kind, 
+      expr_ref & result, expr_ref & new_arg1, expr_ref & new_arg2, bool &);
 
   public:
   qf_to_rewriter(ast_manager & m, params_ref const & p = params_ref()):

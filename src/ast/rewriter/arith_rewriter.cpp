@@ -1699,11 +1699,12 @@ br_status qf_to_rewriter::mk_app_core(func_decl * f, unsigned num_args, expr * c
 }
 
 br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2, 
-    QF_TO_OP kind, expr_ref & result) {
+    QF_TO_OP kind, expr_ref & result, 
+    expr_ref & _new_arg_1, expr_ref & _new_arg_2,
+    bool & is_c_at_rhs) {
   expr *orig_arg1 = arg1, *orig_arg2 = arg2;
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
-  bool is_c_at_rhs = true;
   br_status st = only_non_neg_monomials(arg1, arg2, new_arg1, new_arg2, is_c_at_rhs);
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
@@ -1726,9 +1727,9 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
   }
   else if (st != BR_FAILED) {
     switch (kind) {
-      case LE: result = m_util.mk_le(arg1, arg2); return BR_DONE;
-      case LT: result = m_util.mk_lt(arg1, arg2); return BR_DONE;
-      default: result = m().mk_eq(arg1, arg2);    return BR_DONE;
+      case LE: _new_arg_1 = arg1; _new_arg_2 = arg2; result = m_util.mk_le(arg1, arg2); return BR_DONE;
+      case LT: _new_arg_1 = arg1; _new_arg_2 = arg2; result = m_util.mk_lt(arg1, arg2); return BR_DONE;
+      default: _new_arg_1 = arg1; _new_arg_2 = arg2; result = m().mk_eq(arg1, arg2);    return BR_DONE;
     }
   }
 
@@ -1736,25 +1737,83 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
 }
 
 br_status qf_to_rewriter::mk_le_core(expr * arg1, expr * arg2, expr_ref & result) {
-  br_status ans = qf_to_normalizer(arg1, arg2, LE, result);
-  // [TODO]: work on result to QF_TO-relax it
+  bool is_c_at_rhs = false;
+  expr_ref new_arg1(m());
+  expr_ref new_arg2(m());
+  br_status ans = qf_to_normalizer(arg1, arg2, LE, result, 
+      new_arg1, new_arg2, is_c_at_rhs);
+
+  // qf_to relaxation
+  if(ans != BR_FAILED && !m().is_bool(result) && !is_c_at_rhs){
+    expr * _arg1 = new_arg1;
+    expr * _arg2 = new_arg2;
+    unsigned lhs_sz;
+    expr * const * lhs_monomials = get_monomials(_arg1, lhs_sz);
+    unsigned rhs_sz;
+    expr * const * rhs_monomials = get_monomials(_arg2, rhs_sz);
+
+    if(lhs_sz > 2 || rhs_sz > 1){
+      // BR_FAILED is return because
+      // 'result' IS NOT in QF_TO
+      return BR_FAILED;
+    }
+
+    bool has_numeral = false;
+    expr * lhs_monomial;
+    for(unsigned i = 0; i < lhs_sz; i++){
+      expr * arg = lhs_monomials[i];
+      if(is_numeral(arg))
+        has_numeral = true;
+      else
+        lhs_monomial = arg;
+    }
+
+    if(has_numeral)
+      result = m_util.mk_lt(lhs_monomial, _arg2);
+  }
+
   return ans;
 }
 
 br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result) {
-  br_status ans = qf_to_normalizer(arg1, arg2, LT, result);
-  // [TODO]: work on result to QF_TO-relax it
+  bool is_c_at_rhs = false;
+  expr_ref new_arg1(m());
+  expr_ref new_arg2(m());
+  br_status ans = qf_to_normalizer(arg1, arg2, LT, result, 
+      new_arg1, new_arg2, is_c_at_rhs);
+
+  // qf_to relaxation
+  if(ans != BR_FAILED && !m().is_bool(result) && !is_c_at_rhs){
+    expr * _arg1 = new_arg1;
+    expr * _arg2 = new_arg2;
+    unsigned lhs_sz;
+    expr * const * lhs_monomials = get_monomials(_arg1, lhs_sz);
+    unsigned rhs_sz;
+    expr * const * rhs_monomials = get_monomials(_arg2, rhs_sz);
+
+    if(lhs_sz > 2 || rhs_sz > 1){
+      // BR_FAILED is return because
+      // 'result' IS NOT in QF_TO
+      return BR_FAILED;
+    }
+
+    expr * lhs_monomial;
+    for(unsigned i = 0; i < lhs_sz; i++){
+      expr * arg = lhs_monomials[i];
+      if(!is_numeral(arg))
+        lhs_monomial = arg;
+    }
+
+    result = m_util.mk_lt(lhs_monomial, _arg2);
+  }
+
   return ans;
 }
 
 br_status qf_to_rewriter::mk_ge_core(expr * arg1, expr * arg2, expr_ref & result) {
-  br_status ans = qf_to_normalizer(arg2, arg1, LE, result);
-  // [TODO]: work on result to QF_TO-relax it
-  return ans;
+  return mk_le_core(arg2, arg1, result);
 }
 
 br_status qf_to_rewriter::mk_gt_core(expr * arg1, expr * arg2, expr_ref & result) {
-  br_status ans = qf_to_normalizer(arg2, arg1, LT, result);
-  // [TODO]: work on result to QF_TO-relax it
-  return ans;
+  return mk_lt_core(arg2, arg1, result);
 }
