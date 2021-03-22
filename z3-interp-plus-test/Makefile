@@ -1,6 +1,7 @@
 LDIR=./../build
 CC=g++
 OS=$(shell uname)
+IS_SAME="$(shell diff -q original_output.txt current_output.txt)"
 ifeq ($(OS), Darwin)
 	SO_EXT=dylib
 	DYLD_LIBRARY_PATH=$(LDIR)
@@ -20,8 +21,14 @@ all: test
 test:
 	@$(CC) ./test.cpp \
 		$(LDIR)/libz3.$(SO_EXT) -o $@
-	@./$@
+	@./$@ > current_output.txt
 	@rm $@
+	if [ -z $(IS_SAME) ]; then\
+		echo "Ok! Keep going";\
+		else\
+		echo "Some change just ruined this test";\
+		fi;
+
 # -----------------------------
 
 # ------------------------------
