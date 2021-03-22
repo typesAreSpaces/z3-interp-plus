@@ -900,7 +900,6 @@ br_status poly_rewriter<Config>::only_non_neg_monomials(expr * lhs, expr * rhs,
 
   expr_fast_mark1 visited;  // visited.is_marked(power_product) if the power_product occurs in lhs or rhs
   expr_fast_mark2 multiple; // multiple.is_marked(power_product) if power_product occurs more than once
-  bool has_multiple = false;
 
   numeral a;
   numeral zero(0);
@@ -920,11 +919,6 @@ br_status poly_rewriter<Config>::only_non_neg_monomials(expr * lhs, expr * rhs,
     }
   }
 
-  if (num_coeffs == 0 && is_numeral(rhs)) {
-    TRACE("mk_le_bug", tout << "no coeffs\n";);
-    return BR_FAILED;
-  }
-
   for (unsigned i = 0; i < rhs_sz; i++) {
     expr * arg = rhs_monomials[i];
     if (is_numeral(arg, a)) {
@@ -935,18 +929,11 @@ br_status poly_rewriter<Config>::only_non_neg_monomials(expr * lhs, expr * rhs,
       expr * pp = get_power_product(arg);
       if (visited.is_marked(pp)) {
         multiple.mark(pp);
-        has_multiple = true;
       }
     }
   }
 
   normalize(c);
-
-  if (!has_multiple && num_coeffs <= 1) {
-    if (is_numeral(rhs)) {
-      return BR_FAILED;
-    }
-  }
 
   // Part 2: Collect coefficients from monomials marked as 'multiple'
   // from lhs and rhs 

@@ -1698,16 +1698,13 @@ br_status qf_to_rewriter::mk_app_core(func_decl * f, unsigned num_args, expr * c
   return st;
 }
 
-br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2, 
-    op_kind kind, expr_ref & result) {
-
+br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2, 
+    QF_TO_OP kind, expr_ref & result) {
   expr *orig_arg1 = arg1, *orig_arg2 = arg2;
-
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
   bool is_c_at_rhs = true;
   br_status st = only_non_neg_monomials(arg1, arg2, new_arg1, new_arg2, is_c_at_rhs);
-  // [TODO]: use c to check if the expression is a QF_TO term
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
     arg1 = new_arg1;
@@ -1718,7 +1715,7 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
   if (is_numeral(arg1, a1) && is_numeral(arg2, a2)) {
     switch (kind) {
       case LE: result = a1 <= a2 ? m().mk_true() : m().mk_false(); return BR_DONE;
-      case GE: result = a1 >= a2 ? m().mk_true() : m().mk_false(); return BR_DONE;
+      case LT: result = a1 < a2  ? m().mk_true() : m().mk_false(); return BR_DONE;
       default: result = a1 == a2 ? m().mk_true() : m().mk_false(); return BR_DONE;
     }
   }
@@ -1730,8 +1727,8 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
   else if (st != BR_FAILED) {
     switch (kind) {
       case LE: result = m_util.mk_le(arg1, arg2); return BR_DONE;
-      case GE: result = m_util.mk_ge(arg1, arg2); return BR_DONE;
-      default: result = m().mk_eq(arg1, arg2); return BR_DONE;
+      case LT: result = m_util.mk_lt(arg1, arg2); return BR_DONE;
+      default: result = m().mk_eq(arg1, arg2);    return BR_DONE;
     }
   }
 
@@ -1739,19 +1736,25 @@ br_status qf_to_rewriter::mk_le_ge_eq_core(expr * arg1, expr * arg2,
 }
 
 br_status qf_to_rewriter::mk_le_core(expr * arg1, expr * arg2, expr_ref & result) {
-  return mk_le_ge_eq_core(arg1, arg2, LE, result);
+  br_status ans = qf_to_normalizer(arg1, arg2, LE, result);
+  // [TODO]: work on result to QF_TO-relax it
+  return ans;
 }
 
 br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result) {
-  result = m().mk_not(m_util.mk_le(arg2, arg1));
-  return BR_REWRITE2;
+  br_status ans = qf_to_normalizer(arg1, arg2, LT, result);
+  // [TODO]: work on result to QF_TO-relax it
+  return ans;
 }
 
 br_status qf_to_rewriter::mk_ge_core(expr * arg1, expr * arg2, expr_ref & result) {
-  return mk_le_ge_eq_core(arg2, arg1, LE, result);
+  br_status ans = qf_to_normalizer(arg2, arg1, LE, result);
+  // [TODO]: work on result to QF_TO-relax it
+  return ans;
 }
 
 br_status qf_to_rewriter::mk_gt_core(expr * arg1, expr * arg2, expr_ref & result) {
-  result = m().mk_not(m_util.mk_le(arg1, arg2));
-  return BR_REWRITE2;
+  br_status ans = qf_to_normalizer(arg2, arg1, LT, result);
+  // [TODO]: work on result to QF_TO-relax it
+  return ans;
 }

@@ -174,9 +174,9 @@ struct th_rewriter_cfg : public default_rewriter_cfg {
         SASSERT(num == 2);
         family_id s_fid = m().get_sort(args[0])->get_family_id();
         if (s_fid == m_a_rw.get_fid()){
-          if(m_is_qf_to)
+          if (m_is_qf_to)
             st = m_qf_to_rw.mk_eq_core(args[0], args[1], result);
-          else
+          else 
             st = m_a_rw.mk_eq_core(args[0], args[1], result);
         }
         else if (s_fid == m_bv_rw.get_fid())

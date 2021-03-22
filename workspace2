@@ -7,17 +7,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 src/ast/rewriter/poly_rewriter_def.h
+badd +892 src/ast/rewriter/poly_rewriter_def.h
 argglobal
 %argdel
 edit src/ast/rewriter/poly_rewriter_def.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
-wincmd w
+1wincmd h
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -26,9 +23,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 2resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 3resize ' . ((&columns * 102 + 155) / 310)
+exe 'vert 1resize ' . ((&columns * 113 + 113) / 226)
+exe 'vert 2resize ' . ((&columns * 112 + 113) / 226)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -39,12 +35,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 707 - ((0 * winheight(0) + 38) / 76)
+let s:l = 1067 - ((30 * winheight(0) + 30) / 61)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-707
-normal! 025|
+1067
+normal! 03|
 wincmd w
 argglobal
 if bufexists("src/ast/rewriter/poly_rewriter_def.h") | buffer src/ast/rewriter/poly_rewriter_def.h | else | edit src/ast/rewriter/poly_rewriter_def.h | endif
@@ -57,34 +53,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 828 - ((45 * winheight(0) + 38) / 76)
+let s:l = 820 - ((17 * winheight(0) + 30) / 61)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-828
-normal! 041|
+820
+normal! 022|
 wincmd w
-argglobal
-if bufexists("src/ast/rewriter/poly_rewriter_def.h") | buffer src/ast/rewriter/poly_rewriter_def.h | else | edit src/ast/rewriter/poly_rewriter_def.h | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 884 - ((35 * winheight(0) + 38) / 76)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-884
-normal! 0
-wincmd w
-exe 'vert 1resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 2resize ' . ((&columns * 103 + 155) / 310)
-exe 'vert 3resize ' . ((&columns * 102 + 155) / 310)
+exe 'vert 1resize ' . ((&columns * 113 + 113) / 226)
+exe 'vert 2resize ' . ((&columns * 112 + 113) / 226)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
