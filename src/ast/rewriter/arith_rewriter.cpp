@@ -1706,7 +1706,6 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
   br_status st = only_non_neg_monomials(arg1, arg2, new_arg1, new_arg2, is_c_at_rhs);
-  std::cout << ">>>>>>>>>>> did this failed? " << (st == BR_FAILED) << std::endl;
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
     arg1 = new_arg1;
@@ -1724,6 +1723,8 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
 
   if (st == BR_DONE && arg1 == orig_arg1 && arg2 == orig_arg2) {
     // Nothing new; return BR_FAILED to avoid rewriting loops.
+    _new_arg_1 = arg1;
+    _new_arg_2 = arg2;
     return BR_FAILED;
   }
   else if (st != BR_FAILED) {
@@ -1738,14 +1739,22 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
 }
 
 br_status qf_to_rewriter::mk_le_core(expr * arg1, expr * arg2, expr_ref & result) {
+  expr *orig_arg1 = arg1, *orig_arg2 = arg2;
   bool is_c_at_rhs = false;
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
   br_status ans = qf_to_normalizer(arg1, arg2, LE, result, 
       new_arg1, new_arg2, is_c_at_rhs);
-
   // qf_to relaxation
-  if(ans != BR_FAILED && !m().is_bool(result) && !is_c_at_rhs){
+  // Relax the expression if either:
+  // 1. The expression didnt change but qf_to_normalizer returned BR_FAILED
+  // 2. qf_to_normalizer didnt return BR_FAILED and is not
+  // a primitive boolean value nor the numeral positive value
+  // appears on the right hand side
+  if((ans == BR_FAILED && arg1 == new_arg1 && arg2 == new_arg2) 
+      || (ans != BR_FAILED 
+        && !(m().is_false(result) || m().is_true(result)) 
+        && !is_c_at_rhs)){
     expr * _arg1 = new_arg1;
     expr * _arg2 = new_arg2;
     unsigned lhs_sz;
@@ -1754,40 +1763,55 @@ br_status qf_to_rewriter::mk_le_core(expr * arg1, expr * arg2, expr_ref & result
     expr * const * rhs_monomials = get_monomials(_arg2, rhs_sz);
 
     if(lhs_sz > 2 || rhs_sz > 1){
-      // BR_FAILED is return because
+      // BR_FAILED is returned because
       // 'result' IS NOT in QF_TO
       return BR_FAILED;
     }
 
-    bool has_numeral = false;
-    expr * lhs_monomial;
-    for(unsigned i = 0; i < lhs_sz; i++){
-      expr * arg = lhs_monomials[i];
-      if(is_numeral(arg))
-        has_numeral = true;
-      else
-        lhs_monomial = arg;
+    switch(lhs_sz){
+      case 1:
+        if(is_numeral(_arg1)){
+          if(!is_zero(_arg1)){
+            result = m_util.mk_lt(m_util.mk_numeral(numeral(0), true), _arg2);
+            return BR_DONE;
+          }
+        }
+        if(orig_arg1 == _arg1 && orig_arg2 == _arg2)
+          return BR_FAILED;
+        return BR_DONE;
+      case 2:
+        {
+          expr * lhs_monomial = 
+            is_numeral(lhs_monomials[0]) ? lhs_monomials[1] : lhs_monomials[0];
+          result = m_util.mk_lt(lhs_monomial, _arg2);
+          return BR_DONE;
+        }
+      case 0:
+      default:
+        return BR_FAILED;
     }
-
-    if(has_numeral)
-      result = m_util.mk_lt(lhs_monomial, _arg2);
   }
 
   return ans;
 }
 
 br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result) {
+  expr *orig_arg1 = arg1, *orig_arg2 = arg2;
   bool is_c_at_rhs = false;
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
   br_status ans = qf_to_normalizer(arg1, arg2, LT, result, 
       new_arg1, new_arg2, is_c_at_rhs);
-
-  std::cout << "Debugging result so far 0: " << result << "\n";
-  std::cout << "Is ans BR_FAILED?: " << (ans == BR_FAILED) << "\n";
-
   // qf_to relaxation
-  if(ans != BR_FAILED && !m().is_bool(result) && !is_c_at_rhs){
+  // Relax the expression if either:
+  // 1. The expression didnt change but qf_to_normalizer returned BR_FAILED
+  // 2. qf_to_normalizer didnt return BR_FAILED and is not
+  // a primitive boolean value nor the numeral positive value
+  // appears on the right hand side
+  if((ans == BR_FAILED && arg1 == new_arg1 && arg2 == new_arg2) 
+      || (ans != BR_FAILED 
+        && !(m().is_false(result) || m().is_true(result)) 
+        && !is_c_at_rhs)){
     expr * _arg1 = new_arg1;
     expr * _arg2 = new_arg2;
     unsigned lhs_sz;
@@ -1795,24 +1819,36 @@ br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result
     unsigned rhs_sz;
     expr * const * rhs_monomials = get_monomials(_arg2, rhs_sz);
 
-    std::cout << "Debugging result so far 1: " << result << "\n";
-
     if(lhs_sz > 2 || rhs_sz > 1){
-      // BR_FAILED is return because
+      // BR_FAILED is returned because
       // 'result' IS NOT in QF_TO
       return BR_FAILED;
     }
-    
-    std::cout << "Debugging result so far 2: " << result << "\n";
 
-    expr * lhs_monomial;
-    for(unsigned i = 0; i < lhs_sz; i++){
-      expr * arg = lhs_monomials[i];
-      if(!is_numeral(arg))
-        lhs_monomial = arg;
+    switch(lhs_sz){
+      case 1:
+        if(is_numeral(_arg1)){
+          result = m_util.mk_lt(m_util.mk_numeral(numeral(0), true), _arg2);
+          if(is_zero(orig_arg1) && orig_arg2 == _arg2)
+            return BR_FAILED;
+          return BR_DONE;
+        }
+        if(orig_arg1 == _arg1 && orig_arg2 == _arg2)
+          return BR_FAILED;
+        return BR_DONE;
+      case 2:
+        {
+          expr * lhs_monomial = 
+            is_numeral(lhs_monomials[0]) ? lhs_monomials[1] : lhs_monomials[0];
+          result = m_util.mk_lt(lhs_monomial, _arg2);
+          if(orig_arg1 == lhs_monomial && orig_arg2 == _arg2)
+            return BR_FAILED;
+          return BR_DONE;
+        }
+      case 0:
+      default:
+        return BR_FAILED;
     }
-
-    result = m_util.mk_lt(lhs_monomial, _arg2);
   }
 
   return ans;

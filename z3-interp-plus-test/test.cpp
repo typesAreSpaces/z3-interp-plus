@@ -2,6 +2,20 @@
 #include "../include/z3++.h"
 #include "../include/z3.h"
 
+void test_only_non_neg_monomials();
+void qf_to_test();
+void qf_to_test2();
+void qf_to_test3();
+void qf_to_test4();
+
+int main(){
+  test_only_non_neg_monomials();
+  //qf_to_test();
+  //qf_to_test2();
+  //qf_to_test3();
+  //qf_to_test4();
+}
+
 void test_only_non_neg_monomials(){
   z3::context ctx;
   z3::expr x = ctx.int_const("x");
@@ -105,6 +119,61 @@ void qf_to_test(){
   std::cout << a8 << std::endl;
 }
 
-int main(){
-  qf_to_test();
+void qf_to_test2(){
+  z3::context ctx;
+  z3::expr x = ctx.int_const("x");
+  z3::expr y = ctx.int_const("y");
+  z3::expr z = ctx.int_const("z");
+  z3::expr a7 = (12 < y);
+  z3::expr a8 = (0 < y);
+  z3::expr a9 = (12 <= y);
+  z3::expr a10 = (0 <= y - 12);
+  z3::expr a11 = (0 <= y);
+
+  a7 = a7.qf_to_simplify();
+  a8 = a8.qf_to_simplify();
+  a9 = a9.qf_to_simplify();
+  a10 = a10.qf_to_simplify();
+  a11 = a11.qf_to_simplify();
+
+  std::cout << "Priting a7" << std::endl;
+  std::cout << a7 << std::endl;
+  std::cout << "Priting a8" << std::endl;
+  std::cout << a8 << std::endl;
+  std::cout << "Priting a9" << std::endl;
+  std::cout << a9 << std::endl;
+  std::cout << "Priting a10" << std::endl;
+  std::cout << a10 << std::endl;
+  std::cout << "Priting a11" << std::endl;
+  std::cout << a11 << std::endl;
+}
+
+void qf_to_test3(){
+  z3::context ctx;
+  z3::expr x = ctx.int_const("x");
+  z3::expr y = ctx.int_const("y");
+  z3::expr z = ctx.int_const("z");
+  z3::expr a10 = (0 <= y - 12);
+
+  a10 = a10.qf_to_simplify();
+
+  std::cout << "Priting a10" << std::endl;
+  std::cout << a10 << std::endl;
+}
+
+void qf_to_test4(){
+  z3::context ctx;
+  z3::expr x = ctx.int_const("x");
+  z3::expr y = ctx.int_const("y");
+  z3::expr z = ctx.int_const("z");
+  z3::expr a5 = (x -x < y -y - 12);
+  z3::expr a6 = (x -x < y -y + 12);
+
+  a5 = a5.qf_to_simplify();
+  a6 = a6.qf_to_simplify();
+
+  std::cout << "Priting a5" << std::endl;
+  std::cout << a5 << std::endl;
+  std::cout << "Priting a6" << std::endl;
+  std::cout << a6 << std::endl;
 }
