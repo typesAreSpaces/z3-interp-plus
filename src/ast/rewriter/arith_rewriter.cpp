@@ -1706,6 +1706,7 @@ br_status qf_to_rewriter::qf_to_normalizer(expr * arg1, expr * arg2,
   expr_ref new_arg1(m());
   expr_ref new_arg2(m());
   br_status st = only_non_neg_monomials(arg1, arg2, new_arg1, new_arg2, is_c_at_rhs);
+  std::cout << ">>>>>>>>>>> did this failed? " << (st == BR_FAILED) << std::endl;
   TRACE("mk_le_bug", tout << "st: " << st << " " << new_arg1 << " " << new_arg2 << "\n";);
   if (st != BR_FAILED) {
     arg1 = new_arg1;
@@ -1782,6 +1783,9 @@ br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result
   br_status ans = qf_to_normalizer(arg1, arg2, LT, result, 
       new_arg1, new_arg2, is_c_at_rhs);
 
+  std::cout << "Debugging result so far 0: " << result << "\n";
+  std::cout << "Is ans BR_FAILED?: " << (ans == BR_FAILED) << "\n";
+
   // qf_to relaxation
   if(ans != BR_FAILED && !m().is_bool(result) && !is_c_at_rhs){
     expr * _arg1 = new_arg1;
@@ -1791,11 +1795,15 @@ br_status qf_to_rewriter::mk_lt_core(expr * arg1, expr * arg2, expr_ref & result
     unsigned rhs_sz;
     expr * const * rhs_monomials = get_monomials(_arg2, rhs_sz);
 
+    std::cout << "Debugging result so far 1: " << result << "\n";
+
     if(lhs_sz > 2 || rhs_sz > 1){
       // BR_FAILED is return because
       // 'result' IS NOT in QF_TO
       return BR_FAILED;
     }
+    
+    std::cout << "Debugging result so far 2: " << result << "\n";
 
     expr * lhs_monomial;
     for(unsigned i = 0; i < lhs_sz; i++){

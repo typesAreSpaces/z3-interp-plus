@@ -75,6 +75,8 @@ void qf_to_test(){
   z3::expr a4 = (x + z < y - 12);
   z3::expr a5 = (x -x < y -y - 12);
   z3::expr a6 = (x -x < y -y + 12);
+  z3::expr a7 = (12 < y);
+  z3::expr a8 = (0 < y);
 
   a1 = a1.qf_to_simplify();
   a2 = a2.qf_to_simplify();
@@ -82,6 +84,8 @@ void qf_to_test(){
   a4 = a4.qf_to_simplify();
   a5 = a5.qf_to_simplify();
   a6 = a6.qf_to_simplify();
+  a7 = a7.qf_to_simplify();
+  a8 = a8.qf_to_simplify();
 
   std::cout << "Priting a1" << std::endl;
   std::cout << a1 << std::endl;
@@ -95,6 +99,10 @@ void qf_to_test(){
   std::cout << a5 << std::endl;
   std::cout << "Priting a6" << std::endl;
   std::cout << a6 << std::endl;
+  std::cout << "Priting a7" << std::endl;
+  std::cout << a7 << std::endl;
+  std::cout << "Priting a8" << std::endl;
+  std::cout << a8 << std::endl;
 }
 
 int main(){
