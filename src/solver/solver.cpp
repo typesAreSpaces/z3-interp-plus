@@ -45,6 +45,16 @@ std::ostream& solver::display(std::ostream & out, unsigned n, expr* const* assum
     return out;
 }
 
+std::ostream& solver::display_decls(std::ostream & out, unsigned n, expr* const* assumptions) const {
+    expr_ref_vector fmls(get_manager());
+    get_assertions(fmls);
+    ast_pp_util visitor(get_manager());
+    visitor.collect(fmls);
+    visitor.collect(n, assumptions);
+    visitor.display_decls(out);
+    return out;
+}
+
 void solver::get_assertions(expr_ref_vector& fmls) const {
     unsigned sz = get_num_assertions();
     for (unsigned i = 0; i < sz; ++i) {

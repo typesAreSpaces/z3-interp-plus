@@ -2073,6 +2073,10 @@ Example: Given a context \c c, <tt>c.array_sort(c.int_sort(), c.bool_sort())</tt
             fml));
     }
 
+    std::string to_smt2_decls(char const* status = "unknown") {
+      return std::string(Z3_solver_decls_to_string((*this).ctx(), *this));
+    }
+
     param_descrs get_param_descrs() { return param_descrs(ctx(), Z3_solver_get_param_descrs(ctx(), m_solver)); }
 
   };

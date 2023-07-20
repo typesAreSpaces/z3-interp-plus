@@ -475,6 +475,16 @@ extern "C" {
     Z3_CATCH_RETURN("");
   }
 
+  Z3_string Z3_API Z3_solver_decls_to_string(Z3_context c, Z3_solver s) {
+    Z3_TRY;
+    LOG_Z3_solver_to_string(c, s);
+    RESET_ERROR_CODE();
+    init_solver(c, s);
+    std::ostringstream buffer;
+    to_solver_ref(s)->display_decls(buffer);
+    return mk_c(c)->mk_external_string(buffer.str());
+    Z3_CATCH_RETURN("");
+  }
 
   Z3_lbool Z3_API Z3_get_implied_equalities(Z3_context c, 
       Z3_solver s,

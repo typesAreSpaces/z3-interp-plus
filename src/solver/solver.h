@@ -182,6 +182,11 @@ public:
        \brief Display the content of this solver.
     */
     virtual std::ostream& display(std::ostream & out, unsigned n = 0, expr* const* assumptions = nullptr) const;
+    /**
+       \brief Display the declarations of this solver.
+    */
+    virtual std::ostream& display_decls(std::ostream & out, unsigned n = 0, expr* const* assumptions = nullptr) const;
+
 
     class scoped_push {
         solver& s;

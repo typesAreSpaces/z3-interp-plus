@@ -6194,6 +6194,13 @@ def_API('Z3_mk_func_decl', FUNC_DECL, (_in(CONTEXT), _in(SYMBOL), _in(UINT), _in
     */
   Z3_string Z3_API Z3_solver_to_string(Z3_context c, Z3_solver s);
 
+  /**
+    \brief Convert a solver declarations into a string.
+
+    def_API('Z3_solver_decls_to_string', STRING, (_in(CONTEXT), _in(SOLVER)))
+    */
+  Z3_string Z3_API Z3_solver_decls_to_string(Z3_context c, Z3_solver s);
+
   /*@}*/
 
   /** @name Statistics */
